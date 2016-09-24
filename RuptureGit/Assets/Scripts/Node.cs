@@ -56,7 +56,6 @@ public class Node : MonoBehaviour{
 			level = 5;
 		}
 
-
 	//money earning
 		if (level == 1){
 			production = 50;
@@ -73,7 +72,6 @@ public class Node : MonoBehaviour{
 		if (level == 5){
 			production = 150;
 		}
-
 	}
 
 	public void UpdateWitnessableNodes(){
@@ -82,16 +80,27 @@ public class Node : MonoBehaviour{
 			List<Node> withDupes = gameObject.GetComponentInParent<Office>().officeMembers;
 			List<Node> noDupes = withDupes.Distinct().ToList();
 			noDupes.Remove(noDupes[selfIndex]);
+
+
+			//pseudocode: if there is an office connected to you, grab the supervisor from that office
+			foreach (Office office in gameObject.GetComponentInParent<Office>().connectedOffices){
+				if (office.officeMembers[0].isSupervisor == true){
+					noDupes.Add(office.officeMembers[0]);
+				}
+			}
 			observableNodes = noDupes;
+		
 		} else if (isSupervisor){
 			
 			List<Node> withDupes = gameObject.GetComponentInParent<Office>().officeMembers;
+
 			List<Node> noDupes = withDupes.Distinct().ToList();
 			noDupes.Remove(noDupes[selfIndex]);
 
 			foreach(Office office in observableOffices){
 				noDupes.AddRange(office.officeMembers);
 			}
+
 			observableNodes = noDupes;
 		}
 	}
