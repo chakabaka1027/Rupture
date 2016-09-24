@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class Office : MonoBehaviour {
 
+	//list of offices that see this office
+	public List<Office> connectingOffices;
 	public List<Office> connectedOffices;
 	public List<Node> officeMembers;
 	public Node supervisor;

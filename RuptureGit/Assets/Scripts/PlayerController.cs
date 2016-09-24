@@ -175,6 +175,10 @@ public class PlayerController : MonoBehaviour {
 					currentOffice.GetComponent<Office>().connectedOffices.Add(officeToConnect.GetComponent<Office>());
 					officeToConnect.GetComponent<Office>().connectedOffices.Add(currentOffice.GetComponent<Office>());
 
+					//creating connecting offices list
+					officeToConnect.GetComponent<Office>().connectingOffices.Add(currentOffice.GetComponent<Office>());
+
+
 
 					currentFunds -= networkCost;
 

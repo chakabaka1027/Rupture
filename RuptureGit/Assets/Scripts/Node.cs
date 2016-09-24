@@ -83,9 +83,11 @@ public class Node : MonoBehaviour{
 
 
 			//pseudocode: if there is an office connected to you, grab the supervisor from that office
-			foreach (Office office in gameObject.GetComponentInParent<Office>().connectedOffices){
-				if (office.officeMembers[0].isSupervisor == true){
-					noDupes.Add(office.officeMembers[0]);
+			if (gameObject.GetComponentInParent<Office>().connectingOffices != null){
+				foreach (Office office in gameObject.GetComponentInParent<Office>().connectingOffices){
+					if (office.officeMembers[0].isSupervisor == true){
+						noDupes.Add(office.officeMembers[0]);
+					}
 				}
 			}
 			observableNodes = noDupes;
