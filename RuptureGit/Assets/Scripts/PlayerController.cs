@@ -171,14 +171,20 @@ public class PlayerController : MonoBehaviour {
 
 					currentOffice.GetComponent<Office>().officeMembers[0].observableOffices.Add(officeToConnect.GetComponent<Office>());
 
-					currentOffice.GetComponent<Office>().officeMembers[0].observableNodes.AddRange(officeToConnect.GetComponent<Office>().officeMembers);
-
 					//add to list of connected offices for payment checks
-					currentOffice.GetComponent<Office>().connectedOffices.Add(currentOffice.GetComponent<Office>());
-					officeToConnect.GetComponent<Office>().connectedOffices.Add(officeToConnect.GetComponent<Office>());
+					currentOffice.GetComponent<Office>().connectedOffices.Add(officeToConnect.GetComponent<Office>());
+					officeToConnect.GetComponent<Office>().connectedOffices.Add(currentOffice.GetComponent<Office>());
+
+					//creating connecting offices list
+					officeToConnect.GetComponent<Office>().connectingOffices.Add(currentOffice.GetComponent<Office>());
+
 
 
 					currentFunds -= networkCost;
+
+					foreach(GameObject node in allNodes){
+						node.GetComponent<Node>().UpdateWitnessableNodes();
+					}
 
 				}
 			}	
