@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour {
 
 	[Header("Office Placement")]
 	public GameObject office;
+	public GameObject officeContainer;
 
 
 	[Header("Camera Movement")]
@@ -68,7 +69,8 @@ public class PlayerController : MonoBehaviour {
 			Debug.DrawLine(ray.origin, point, Color.red);
 
 			if (Input.GetMouseButtonDown(0) && playerState == State.Office && currentFunds > officeCost && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1) == false){
-				Instantiate(office, point, Quaternion.identity);
+				GameObject officeCreation = Instantiate(office, point, Quaternion.identity) as GameObject;
+				officeCreation.transform.parent = officeContainer.transform;
 				currentFunds -= officeCost;
 
 			}
