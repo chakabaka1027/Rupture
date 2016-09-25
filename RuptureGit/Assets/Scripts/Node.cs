@@ -18,8 +18,9 @@ public class Node : MonoBehaviour{
 	float t;
 
 	public int production;
-	public float acceptedFunds;
-	public float minimumThreshold = 300;
+	public int illicitFunds;
+	public int minimumThreshold = 300;
+	public int corruptionQuotient = 10;
 	public enum NodeState{Neutral, Informant, Corrupt, Witness, Whistleblower};
 	public NodeState nodeState;
 
@@ -58,20 +59,21 @@ public class Node : MonoBehaviour{
 
 	//money earning
 		if (level == 1){
-			production = 50;
-		}
-		if (level == 2){
-			production = 75;
-		}
-		if (level == 3){
-			production = 100;
-		}
-		if (level == 4){
-			production = 125;
-		}
-		if (level == 5){
 			production = 150;
 		}
+		if (level == 2){
+			production = 175;
+		}
+		if (level == 3){
+			production = 200;
+		}
+		if (level == 4){
+			production = 225;
+		}
+		if (level == 5){
+			production = 250;
+		}
+
 	}
 
 	public void UpdateWitnessableNodes(){
@@ -109,9 +111,18 @@ public class Node : MonoBehaviour{
 
 	public void Pay(){
 		if (Time.time > timeSincePay && gameObject.GetComponentInParent<Office>().connectedOffices.Any()){
-			player.currentFunds += production;
+			if (nodeState == NodeState.Corrupt) {
+				//corrupt nodes take a cut of their production before paying the player
+				production = production - (production / corruptionQuotient);
+				illicitFunds += production / corruptionQuotient;
+
+			} else {
+				player.currentFunds += production;
+			}
+
 			timeSincePay = Time.time + payInterval;
-			PayEffect();
+			PayEffect ();
+
 		}
 	}
 

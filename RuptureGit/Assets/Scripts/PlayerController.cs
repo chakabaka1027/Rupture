@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour {
 	public int officeCost = 1000;
 
 	public int minutesUntilPay = 3;
-	public int startingFunds = 2000;
+	public int startingFunds = 5000;
 	[HideInInspector]
 	public int currentFunds;
 	UIManager uiManager;
