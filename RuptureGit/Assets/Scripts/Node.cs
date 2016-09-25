@@ -59,19 +59,19 @@ public class Node : MonoBehaviour{
 
 	//money earning
 		if (level == 1){
-			production = 50;
+			production = 150;
 		}
 		if (level == 2){
-			production = 75;
+			production = 175;
 		}
 		if (level == 3){
-			production = 100;
+			production = 200;
 		}
 		if (level == 4){
-			production = 125;
+			production = 225;
 		}
 		if (level == 5){
-			production = 150;
+			production = 250;
 		}
 
 	}

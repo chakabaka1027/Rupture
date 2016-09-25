@@ -29,10 +29,10 @@ public class OffersAndDiffusion : MonoBehaviour {
 
 			for (int i = 0; i < witnesses.Count; i++){
 
-				//will give a 1/3 chance that the node will resist a bribe
-				int bribeChance = Random.Range (witnesses [i].minimumThreshold - 1, witnesses [i].minimumThreshold + 1);
+				//will give a 50% chance that the node will resist a bribe
+				int bribeChance = Random.Range (witnesses [i].minimumThreshold, witnesses [i].minimumThreshold + 1);
 
-				if ((thisNode.illicitFunds / 2) > witnesses [i].minimumThreshold && witnesses[i].minimumThreshold >= bribeChance) {
+				if ((thisNode.illicitFunds / 2) > witnesses [i].minimumThreshold && witnesses[i].minimumThreshold == bribeChance) {
 					//pay off witness
 					thisNode.illicitFunds -= witnesses [i].minimumThreshold;
 					witnesses [i].illicitFunds += witnesses [i].minimumThreshold;
@@ -46,6 +46,7 @@ public class OffersAndDiffusion : MonoBehaviour {
 					if (chance < whistleblowerPercentChance){
 						witnesses[i].nodeState = Node.NodeState.Whistleblower;
 						witnesses[i].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
+						Debug.Log (thisNode.name + "Is corrupt!");
 					}
 				}
 			}
@@ -54,4 +55,6 @@ public class OffersAndDiffusion : MonoBehaviour {
 			nextCycle = Time.time + 8; 
 		}
 	}
+
+
 }
