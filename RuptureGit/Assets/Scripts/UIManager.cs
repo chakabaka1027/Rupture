@@ -155,6 +155,20 @@ public class UIManager : MonoBehaviour {
 
 	}
 
+	//Austin added this method on 10/4/2016
+	public void Cursory(){
+		CloseInvestigateUI ();
+		player.playerState = PlayerController.State.Cursory;
+		SetGameModeText ("Cursory Investigation");
+	}
+
+	//Austin added this method on 10/4/2016
+	public void Thorough(){
+		CloseInvestigateUI ();
+		player.playerState = PlayerController.State.Thorough;
+		SetGameModeText ("Thorough Investigation");
+	}
+
 	public void SetGameModeText(string mode){
 		gameModeObject.SetActive(true);
 		gameModeText.text = mode;

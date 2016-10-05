@@ -1202,7 +1202,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 589007426}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1686774413}
+        m_MethodName: Thorough
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &589007426
@@ -2518,6 +2529,7 @@ GameObject:
   - 114: {fileID: 1686774410}
   - 114: {fileID: 1686774413}
   - 114: {fileID: 1686774414}
+  - 114: {fileID: 1686774415}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -2597,7 +2609,7 @@ MonoBehaviour:
   funds: {fileID: 271103502}
   bureaucratText: {fileID: 1878708881}
   titleBlackFade: {r: 0, g: 0, b: 0, a: 0.584}
-  lineShader: {fileID: 207, guid: 0000000000000000f000000000000000, type: 0}
+  lineShader: {fileID: 4800000, guid: 61a27089b31574907bc5953955be2ba9, type: 3}
   flow: {fileID: 19858054, guid: 4d6f052a3fd7e4cd1a6d640404031ee7, type: 2}
   buildButton: {fileID: 1506070267}
   buildEndPos: {fileID: 674488564}
@@ -2619,6 +2631,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3dcf19e3121e4a01a35768222fa0b84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1686774415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1686774409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ff699a528c7e474080cd779df01080d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bureacratLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &1721393615
 GameObject:
   m_ObjectHideFlags: 0
@@ -3223,7 +3249,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2028619738}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1686774413}
+        m_MethodName: Cursory
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2028619738

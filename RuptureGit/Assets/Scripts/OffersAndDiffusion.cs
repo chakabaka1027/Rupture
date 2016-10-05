@@ -17,10 +17,6 @@ public class OffersAndDiffusion : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		Algorithm ();
-	}
-
-	void Algorithm(){
 		thisNode = GetComponent<Node>();
 
 		List<Node> witnesses = thisNode.observableNodes;
@@ -42,7 +38,7 @@ public class OffersAndDiffusion : MonoBehaviour {
 					witnesses[i].nodeState = Node.NodeState.Witness;
 					witnesses[i].gameObject.GetComponent<MeshRenderer> ().material.color = Color.green;
 
-					int chance = Random.Range(1, 1000);
+					int chance = Random.Range(1, 2000);
 					if (chance < whistleblowerPercentChance){
 						witnesses[i].nodeState = Node.NodeState.Whistleblower;
 						witnesses[i].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
@@ -55,6 +51,4 @@ public class OffersAndDiffusion : MonoBehaviour {
 			nextCycle = Time.time + 8; 
 		}
 	}
-
-
 }
