@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour {
 	public int currentFunds;
 	UIManager uiManager;
 
+
 	void Start () {
 		rb = GetComponent<Rigidbody>();
 		uiManager = GetComponent<UIManager>();
@@ -84,7 +85,6 @@ public class PlayerController : MonoBehaviour {
 		//Clicking
 		if (Input.GetMouseButtonDown(0) && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1) == false){
 			if (playerState == State.Hiring && currentFunds > hireCost){
-				currentFunds -= hireCost;
 				Hire();
 			}  else if (playerState == State.Network && currentFunds > networkCost){
 				MakeNetworkConnection();
@@ -104,27 +104,52 @@ public class PlayerController : MonoBehaviour {
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)){
 			Office office = hit.collider.gameObject.GetComponent<Office>();
 
+			int nodeLayer = 1 << 9;
+			Collider[] hitColliders1;
+			Collider[] hitColliders2;
+			Collider[] hitColliders3;
+			Collider[] hitColliders4;
+
+
+			hitColliders1 = Physics.OverlapSphere ((office.transform.position + Vector3.forward * 1 + Vector3.up * 0.125f), 0.1f, nodeLayer);
+			hitColliders2 = Physics.OverlapSphere ((office.transform.position + Vector3.left * 1 + Vector3.up * 0.125f), 0.1f, nodeLayer);
+			hitColliders3 = Physics.OverlapSphere ((office.transform.position + Vector3.right * 1 + Vector3.up * 0.125f), 0.1f, nodeLayer);
+			hitColliders4 = Physics.OverlapSphere ((office.transform.position + Vector3.back * 1 + Vector3.up * 0.125f), 0.1f, nodeLayer);
+
+
 			if (office.officeCount < maxPerOffice){
 
 				GameObject currentBureaucrat = Instantiate(bureaucrat, office.transform.position + Vector3.forward * 1, Quaternion.identity) as GameObject;
 				currentBureaucrat.transform.parent = hit.collider.gameObject.transform;
 
-				//position desks
-				if (office.officeCount == 0){
+
+				if (hitColliders1.Length == 0) {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.forward * 1 + Vector3.up * 0.125f;
-				}
-
-				if (office.officeCount == 1){
+				} else if (hitColliders2.Length == 0) {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.left * 1 + Vector3.up * 0.125f;
-				}
-
-				if (office.officeCount == 2){
+				} else if (hitColliders3.Length == 0) {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.right * 1 + Vector3.up * 0.125f;
-				}
-
-				if (office.officeCount == 3){
+				} else if (hitColliders4.Length == 0) {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.back * 1 + Vector3.up * 0.125f;
 				}
+
+//
+//				//position desks
+//				if (office.officeCount == 0){
+//					currentBureaucrat.transform.position = office.transform.position + Vector3.forward * 1 + Vector3.up * 0.125f;
+//				}
+//
+//				if (office.officeCount == 1){
+//					currentBureaucrat.transform.position = office.transform.position + Vector3.left * 1 + Vector3.up * 0.125f;
+//				}
+//
+//				if (office.officeCount == 2){
+//					currentBureaucrat.transform.position = office.transform.position + Vector3.right * 1 + Vector3.up * 0.125f;
+//				}
+//
+//				if (office.officeCount == 3){
+//					currentBureaucrat.transform.position = office.transform.position + Vector3.back * 1 + Vector3.up * 0.125f;
+//				}
 
 				//generate list of all bureaucrats in office
 				office.officeMembers.Add(currentBureaucrat.GetComponent<Node>());
@@ -140,6 +165,8 @@ public class PlayerController : MonoBehaviour {
 				foreach(GameObject node in allNodes){
 					node.GetComponent<Node>().UpdateWitnessableNodes();
 				}
+
+				currentFunds -= hireCost;
 			}
 		}
 	}

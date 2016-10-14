@@ -52,7 +52,8 @@ public class Investigations : MonoBehaviour {
 
 				if (node.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
 					RemoveThisNodeFromLists ();
-					GameObject.Destroy (node);
+					Destroy (node);
+
 				}
 			}
 		}
@@ -75,6 +76,7 @@ public class Investigations : MonoBehaviour {
 				if (node.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
 					RemoveThisNodeFromLists ();
 					GameObject.Destroy (node);
+
 				}
 			}
 		}
@@ -83,19 +85,24 @@ public class Investigations : MonoBehaviour {
 
 
 	void RemoveThisNodeFromLists(){
+		parentOffice = node.GetComponentInParent<Office> ();
+
 		player.allNodes.Remove (node);
 
 		foreach (Node observableNode in node.GetComponent<Node> ().observableNodes) {
 			observableNode.observableNodes.Remove (node.GetComponent<Node> ());
 		}
 
-		if (!node.GetComponent<Node> ().isSupervisor) {
-			node.GetComponentInParent<Office> ().officeMembers.Remove (node.GetComponent<Node> ());
-		} else if (node.GetComponent<Node> ().isSupervisor) {
+		parentOffice.officeMembers.Remove (node.GetComponent<Node> ());
+		parentOffice.officeCount -= 1;
+
+		if (node.GetComponent<Node> ().isSupervisor) {
 			foreach (Office observableOffice in node.GetComponent<Node> ().observableOffices) {
 				observableOffice.officeMembers.Remove (node.GetComponent<Node> ());
 			}
 		}
+
+		parentOffice.MakeSupervisor ();
 	}
 
 	void RemoveAccompliceFromLists(){
@@ -103,3 +110,13 @@ public class Investigations : MonoBehaviour {
 	}
 
 }
+
+//first experimental method placed in the Hire() method of the PlayerController script 
+//to try and fully account for when a supervisor is fired and replaced
+//
+
+//				if (office.officeCount > 0 && !office.officeMembers [0].isSupervisor) {
+////					office.officeMembers.Insert (0, currentBureaucrat.GetComponent<Node>());
+//					currentBureaucrat.transform.position = office.transform.position + Vector3.forward * 1 + Vector3.up * 0.125f;
+////					office.officeMembers [0].isSupervisor = true;
+//				}
