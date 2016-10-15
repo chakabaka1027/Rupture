@@ -10,7 +10,7 @@ public class Investigations : MonoBehaviour {
 
 	PlayerController player;
 	Office parentOffice;
-	GameObject node;
+	GameObject selectedNode;
 
 	public LayerMask bureacratLayer;
 	int cursoryCost = 200;
@@ -45,14 +45,14 @@ public class Investigations : MonoBehaviour {
 
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity, bureacratLayer)){
 
-			node = hit.collider.gameObject;
+			selectedNode = hit.collider.gameObject;
 
 			if (player.currentFunds >= cursoryCost){
 				player.currentFunds -= cursoryCost;
 
-				if (node.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
-					RemoveThisNodeFromLists ();
-					Destroy (node);
+				if (selectedNode.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
+					RemoveNodeFromLists (selectedNode);
+					Destroy (selectedNode);
 
 				}
 			}
@@ -68,15 +68,15 @@ public class Investigations : MonoBehaviour {
 
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity, bureacratLayer)){
 
-			node = hit.collider.gameObject;
+			selectedNode = hit.collider.gameObject;
 
 			if (player.currentFunds >= thoroughCost){
 				player.currentFunds -= thoroughCost;
 
-				if (node.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
-					RemoveThisNodeFromLists ();
-					GameObject.Destroy (node);
-
+				if (selectedNode.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
+					RemoveNodeFromLists (Accomplice(selectedNode));
+					RemoveNodeFromLists (selectedNode);
+					GameObject.Destroy (selectedNode);
 				}
 			}
 		}
@@ -84,7 +84,9 @@ public class Investigations : MonoBehaviour {
 	}
 
 
-	void RemoveThisNodeFromLists(){
+	void RemoveNodeFromLists(GameObject node){
+
+		List <Office> supervisorOfficeList = null;
 		parentOffice = node.GetComponentInParent<Office> ();
 
 		player.allNodes.Remove (node);
@@ -94,19 +96,43 @@ public class Investigations : MonoBehaviour {
 		}
 
 		parentOffice.officeMembers.Remove (node.GetComponent<Node> ());
-		parentOffice.officeCount -= 1;
+		parentOffice.officeCount --;
 
 		if (node.GetComponent<Node> ().isSupervisor) {
+			//copies the supervisor's list of observable offices to be transferred to the new supervisor
+			supervisorOfficeList = node.GetComponent<Node> ().observableOffices;
+
 			foreach (Office observableOffice in node.GetComponent<Node> ().observableOffices) {
 				observableOffice.officeMembers.Remove (node.GetComponent<Node> ());
 			}
+
+			//makes the next node down in the list, which has been shifted to the zeroeth position, the new supervisor
+			parentOffice.MakeSupervisor ();
+			parentOffice.supervisor.observableOffices = supervisorOfficeList;
 		}
 
-		parentOffice.MakeSupervisor ();
+
+//		foreach (Node officemember in parentOffice.officeMembers) {
+//			officemember.selfIndex --;
+//		}
+
 	}
 
-	void RemoveAccompliceFromLists(){
-		
+	GameObject Accomplice(GameObject node){
+
+		List <Node> accomplices = null;
+
+//		//this loop SHOULD determine who is an accomplice to the corrupt node being investigated. Presently not functional
+//		//for reasons I can't understand :( Error message says that accomplices "not set to an instance of an object", even tho I add witness?
+		foreach (Node witness in node.GetComponent<Node> ().observableNodes) {
+			if (witness.nodeState == Node.NodeState.Corrupt) {
+				accomplices.Add(witness);
+			}			
+		}
+		int randomAccomplice = Random.Range (0, accomplices.Count);
+		GameObject outedNode = accomplices [randomAccomplice].gameObject;
+
+		return outedNode;
 	}
 
 }

@@ -104,13 +104,13 @@ public class PlayerController : MonoBehaviour {
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)){
 			Office office = hit.collider.gameObject.GetComponent<Office>();
 
-			int nodeLayer = 1 << 9;
+			int nodeLayer = 1 << 9; //the Bureacrat layer
 			Collider[] hitColliders1;
 			Collider[] hitColliders2;
 			Collider[] hitColliders3;
 			Collider[] hitColliders4;
 
-
+			//creates four small spheres that check to see if the places Bureaucrats might be placed in are occupied
 			hitColliders1 = Physics.OverlapSphere ((office.transform.position + Vector3.forward * 1 + Vector3.up * 0.125f), 0.1f, nodeLayer);
 			hitColliders2 = Physics.OverlapSphere ((office.transform.position + Vector3.left * 1 + Vector3.up * 0.125f), 0.1f, nodeLayer);
 			hitColliders3 = Physics.OverlapSphere ((office.transform.position + Vector3.right * 1 + Vector3.up * 0.125f), 0.1f, nodeLayer);
@@ -122,7 +122,8 @@ public class PlayerController : MonoBehaviour {
 				GameObject currentBureaucrat = Instantiate(bureaucrat, office.transform.position + Vector3.forward * 1, Quaternion.identity) as GameObject;
 				currentBureaucrat.transform.parent = hit.collider.gameObject.transform;
 
-
+				//this if/else chain will check each position in order before deciding where to place a Bureaucrat
+				//this solves the bug of having overlapping Bureaucrats if trying to place them following a corrupt one's removal
 				if (hitColliders1.Length == 0) {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.forward * 1 + Vector3.up * 0.125f;
 				} else if (hitColliders2.Length == 0) {
@@ -132,24 +133,7 @@ public class PlayerController : MonoBehaviour {
 				} else if (hitColliders4.Length == 0) {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.back * 1 + Vector3.up * 0.125f;
 				}
-
-//
-//				//position desks
-//				if (office.officeCount == 0){
-//					currentBureaucrat.transform.position = office.transform.position + Vector3.forward * 1 + Vector3.up * 0.125f;
-//				}
-//
-//				if (office.officeCount == 1){
-//					currentBureaucrat.transform.position = office.transform.position + Vector3.left * 1 + Vector3.up * 0.125f;
-//				}
-//
-//				if (office.officeCount == 2){
-//					currentBureaucrat.transform.position = office.transform.position + Vector3.right * 1 + Vector3.up * 0.125f;
-//				}
-//
-//				if (office.officeCount == 3){
-//					currentBureaucrat.transform.position = office.transform.position + Vector3.back * 1 + Vector3.up * 0.125f;
-//				}
+					
 
 				//generate list of all bureaucrats in office
 				office.officeMembers.Add(currentBureaucrat.GetComponent<Node>());
@@ -207,8 +191,6 @@ public class PlayerController : MonoBehaviour {
 					//creating connecting offices list
 					officeToConnect.GetComponent<Office>().connectingOffices.Add(currentOffice.GetComponent<Office>());
 
-
-				
 					currentFunds -= networkCost;
 
 					foreach(GameObject node in allNodes){
