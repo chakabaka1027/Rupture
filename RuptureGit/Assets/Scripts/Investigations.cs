@@ -53,14 +53,12 @@ public class Investigations : MonoBehaviour {
 				if (selectedNode.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
 					RemoveNodeFromLists (selectedNode);
 					Destroy (selectedNode);
-
 				}
 			}
 		}
 	}
 
 		
-
 	void ThoroughInvestigation(){
 
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -74,19 +72,23 @@ public class Investigations : MonoBehaviour {
 				player.currentFunds -= thoroughCost;
 
 				if (selectedNode.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
-					RemoveNodeFromLists (Accomplice(selectedNode));
+					
+					player.currentFunds += selectedNode.GetComponent<Node> ().illicitFunds;
+					player.currentFunds += Accomplice (selectedNode).GetComponent<Node> ().illicitFunds;
+
 					RemoveNodeFromLists (selectedNode);
+					GameObject.Destroy (Accomplice (selectedNode));
 					GameObject.Destroy (selectedNode);
+					RemoveNodeFromLists (Accomplice(selectedNode));
 				}
 			}
 		}
-
 	}
 
 
 	void RemoveNodeFromLists(GameObject node){
 
-		List <Office> supervisorOfficeList = null;
+		List <Office> supervisorOfficeList = new List<Office>();
 		parentOffice = node.GetComponentInParent<Office> ();
 
 		player.allNodes.Remove (node);
@@ -112,23 +114,24 @@ public class Investigations : MonoBehaviour {
 		}
 
 
-//		foreach (Node officemember in parentOffice.officeMembers) {
-//			officemember.selfIndex --;
-//		}
+		foreach (Node officemember in parentOffice.officeMembers) {
+			officemember.selfIndex --;
+		}
 
 	}
 
 	GameObject Accomplice(GameObject node){
 
-		List <Node> accomplices = null;
+		Debug.Log ("I'm running");
 
-//		//this loop SHOULD determine who is an accomplice to the corrupt node being investigated. Presently not functional
-//		//for reasons I can't understand :( Error message says that accomplices "not set to an instance of an object", even tho I add witness?
+		List <Node> accomplices = new List<Node>();
+
 		foreach (Node witness in node.GetComponent<Node> ().observableNodes) {
 			if (witness.nodeState == Node.NodeState.Corrupt) {
 				accomplices.Add(witness);
 			}			
 		}
+
 		int randomAccomplice = Random.Range (0, accomplices.Count);
 		GameObject outedNode = accomplices [randomAccomplice].gameObject;
 
@@ -136,13 +139,3 @@ public class Investigations : MonoBehaviour {
 	}
 
 }
-
-//first experimental method placed in the Hire() method of the PlayerController script 
-//to try and fully account for when a supervisor is fired and replaced
-//
-
-//				if (office.officeCount > 0 && !office.officeMembers [0].isSupervisor) {
-////					office.officeMembers.Insert (0, currentBureaucrat.GetComponent<Node>());
-//					currentBureaucrat.transform.position = office.transform.position + Vector3.forward * 1 + Vector3.up * 0.125f;
-////					office.officeMembers [0].isSupervisor = true;
-//				}

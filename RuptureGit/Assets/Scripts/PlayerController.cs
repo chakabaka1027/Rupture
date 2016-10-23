@@ -109,6 +109,11 @@ public class PlayerController : MonoBehaviour {
 			Collider[] hitColliders2;
 			Collider[] hitColliders3;
 			Collider[] hitColliders4;
+//
+//			Vector3 position1 = new Vector3 (Vector3.forward * 1 + Vector3.up * 0.125f);
+//			Vector3 position2 = new Vector3 (Vector3.left * 1 + Vector3.up * 0.125f);
+//			Vector3 position3 = new Vector3 (Vector3.right * 1 + Vector3.up * 0.125f);
+//			Vector3 position4 = new Vector3 (Vector3.back * 1 + Vector3.up * 0.125f);
 
 			//creates four small spheres that check to see if the places Bureaucrats might be placed in are occupied
 			hitColliders1 = Physics.OverlapSphere ((office.transform.position + Vector3.forward * 1 + Vector3.up * 0.125f), 0.1f, nodeLayer);
@@ -124,6 +129,19 @@ public class PlayerController : MonoBehaviour {
 
 				//this if/else chain will check each position in order before deciding where to place a Bureaucrat
 				//this solves the bug of having overlapping Bureaucrats if trying to place them following a corrupt one's removal
+
+
+//				if (!Physics.OverlapSphere ((office.transform.position + position1), 0.1f, nodeLayer).Any) {
+//					currentBureaucrat.transform.position = office.transform.position + position1;
+//				} else if (!Physics.OverlapSphere ((office.transform.position + position2), 0.1f, nodeLayer).Any) {
+//					currentBureaucrat.transform.position = office.transform.position + position2;
+//				} else if (!Physics.OverlapSphere ((office.transform.position + position3), 0.1f, nodeLayer).Any) {
+//					currentBureaucrat.transform.position = office.transform.position + position3;
+//				} else if (!Physics.OverlapSphere ((office.transform.position + position4), 0.1f, nodeLayer).Any) {
+//					currentBureaucrat.transform.position = office.transform.position + position4;
+//				}
+
+
 				if (hitColliders1.Length == 0) {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.forward * 1 + Vector3.up * 0.125f;
 				} else if (hitColliders2.Length == 0) {
@@ -132,8 +150,7 @@ public class PlayerController : MonoBehaviour {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.right * 1 + Vector3.up * 0.125f;
 				} else if (hitColliders4.Length == 0) {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.back * 1 + Vector3.up * 0.125f;
-				}
-					
+				} 
 
 				//generate list of all bureaucrats in office
 				office.officeMembers.Add(currentBureaucrat.GetComponent<Node>());
