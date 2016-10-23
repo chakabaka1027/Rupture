@@ -42,7 +42,7 @@ public class Node : MonoBehaviour{
 
 	void Update(){
 
-	//leveling system
+		//leveling system
 		experience = Time.time - t;
 		if (experience > 60){
 			level = 2;
@@ -57,7 +57,7 @@ public class Node : MonoBehaviour{
 			level = 5;
 		}
 
-	//money earning
+		//money earning
 		if (level == 1){
 			production = 150;
 		}
@@ -93,9 +93,9 @@ public class Node : MonoBehaviour{
 				}
 			}
 			observableNodes = noDupes;
-		
+
 		} else if (isSupervisor){
-			
+
 			List<Node> withDupes = gameObject.GetComponentInParent<Office>().officeMembers;
 
 			List<Node> noDupes = withDupes.Distinct().ToList();
@@ -127,7 +127,7 @@ public class Node : MonoBehaviour{
 	}
 
 	public void PayEffect(){
-			GameObject effect = Instantiate(payEffect, gameObject.transform.position, Quaternion.identity) as GameObject;
-			Destroy(effect, 2);
+		GameObject effect = Instantiate(payEffect, gameObject.transform.position, Quaternion.identity) as GameObject;
+		Destroy(effect, 2);
 	}
 }

@@ -10,7 +10,7 @@ public class Investigations : MonoBehaviour {
 
 	PlayerController player;
 	Office parentOffice;
-	GameObject node;
+	GameObject selectedNode;
 
 	public LayerMask bureacratLayer;
 	int cursoryCost = 200;
@@ -45,21 +45,20 @@ public class Investigations : MonoBehaviour {
 
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity, bureacratLayer)){
 
-			node = hit.collider.gameObject;
+			selectedNode = hit.collider.gameObject;
 
 			if (player.currentFunds >= cursoryCost){
 				player.currentFunds -= cursoryCost;
 
-				if (node.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
-					RemoveThisNodeFromLists ();
-					GameObject.Destroy (node);
+				if (selectedNode.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
+					RemoveNodeFromLists (selectedNode);
+					Destroy (selectedNode);
 				}
 			}
 		}
 	}
 
 		
-
 	void ThoroughInvestigation(){
 
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -67,39 +66,76 @@ public class Investigations : MonoBehaviour {
 
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity, bureacratLayer)){
 
-			node = hit.collider.gameObject;
+			selectedNode = hit.collider.gameObject;
 
 			if (player.currentFunds >= thoroughCost){
 				player.currentFunds -= thoroughCost;
 
-				if (node.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
-					RemoveThisNodeFromLists ();
-					GameObject.Destroy (node);
+				if (selectedNode.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
+					
+					player.currentFunds += selectedNode.GetComponent<Node> ().illicitFunds;
+					player.currentFunds += Accomplice (selectedNode).GetComponent<Node> ().illicitFunds;
+
+					RemoveNodeFromLists (selectedNode);
+					GameObject.Destroy (Accomplice (selectedNode));
+					GameObject.Destroy (selectedNode);
+					RemoveNodeFromLists (Accomplice(selectedNode));
 				}
 			}
 		}
-
 	}
 
 
-	void RemoveThisNodeFromLists(){
+	void RemoveNodeFromLists(GameObject node){
+
+		List <Office> supervisorOfficeList = new List<Office>();
+		parentOffice = node.GetComponentInParent<Office> ();
+
 		player.allNodes.Remove (node);
 
 		foreach (Node observableNode in node.GetComponent<Node> ().observableNodes) {
 			observableNode.observableNodes.Remove (node.GetComponent<Node> ());
 		}
 
-		if (!node.GetComponent<Node> ().isSupervisor) {
-			node.GetComponentInParent<Office> ().officeMembers.Remove (node.GetComponent<Node> ());
-		} else if (node.GetComponent<Node> ().isSupervisor) {
+		parentOffice.officeMembers.Remove (node.GetComponent<Node> ());
+		parentOffice.officeCount --;
+
+		if (node.GetComponent<Node> ().isSupervisor) {
+			//copies the supervisor's list of observable offices to be transferred to the new supervisor
+			supervisorOfficeList = node.GetComponent<Node> ().observableOffices;
+
 			foreach (Office observableOffice in node.GetComponent<Node> ().observableOffices) {
 				observableOffice.officeMembers.Remove (node.GetComponent<Node> ());
 			}
+
+			//makes the next node down in the list, which has been shifted to the zeroeth position, the new supervisor
+			parentOffice.MakeSupervisor ();
+			parentOffice.supervisor.observableOffices = supervisorOfficeList;
 		}
+
+
+		foreach (Node officemember in parentOffice.officeMembers) {
+			officemember.selfIndex --;
+		}
+
 	}
 
-	void RemoveAccompliceFromLists(){
-		
+	GameObject Accomplice(GameObject node){
+
+		Debug.Log ("I'm running");
+
+		List <Node> accomplices = new List<Node>();
+
+		foreach (Node witness in node.GetComponent<Node> ().observableNodes) {
+			if (witness.nodeState == Node.NodeState.Corrupt) {
+				accomplices.Add(witness);
+			}			
+		}
+
+		int randomAccomplice = Random.Range (0, accomplices.Count);
+		GameObject outedNode = accomplices [randomAccomplice].gameObject;
+
+		return outedNode;
 	}
 
 }
