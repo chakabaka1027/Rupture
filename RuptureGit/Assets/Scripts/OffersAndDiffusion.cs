@@ -30,10 +30,12 @@ public class OffersAndDiffusion : MonoBehaviour {
 
 				if ((thisNode.illicitFunds / 2) > witnesses [i].minimumThreshold && witnesses[i].minimumThreshold == bribeChance) {
 					//pay off witness
-					thisNode.illicitFunds -= witnesses [i].minimumThreshold;
-					witnesses [i].illicitFunds += witnesses [i].minimumThreshold;
-					witnesses [i].nodeState = Node.NodeState.Corrupt;
-					witnesses [i].gameObject.GetComponent<MeshRenderer> ().material.color = Color.red;
+					if (witnesses [i] != null) {
+						thisNode.illicitFunds -= witnesses [i].minimumThreshold;
+						witnesses [i].illicitFunds += witnesses [i].minimumThreshold;
+						witnesses [i].nodeState = Node.NodeState.Corrupt;	
+						witnesses [i].gameObject.GetComponent<MeshRenderer> ().material.color = Color.red;
+					}
 				} else if (witnesses[i].nodeState != Node.NodeState.Corrupt){
 					witnesses[i].nodeState = Node.NodeState.Witness;
 					witnesses[i].gameObject.GetComponent<MeshRenderer> ().material.color = Color.green;
