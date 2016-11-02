@@ -185,8 +185,10 @@ public class PlayerController : MonoBehaviour {
 	void MakeNetworkConnection(){
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
+		bool cycle = false;
 
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity, clickable)){
+
 			if(currentOfficeSelected == false){
 				currentOffice = hit.collider.gameObject;
 				if (currentOffice.GetComponent<Office>().officeMembers.Any()){
@@ -198,7 +200,29 @@ public class PlayerController : MonoBehaviour {
 			if(currentOfficeSelected == true && hit.collider.gameObject != currentOffice){
 				officeToConnect = hit.collider.gameObject;
 
-				if (officeToConnect.GetComponent<Office>().officeMembers.Any()){
+
+				//this for loop doesn't work even though it seems the same as the foreach beneath it. I wonder why
+//				for (int i = 0; i > officeToConnect.GetComponent<Office>().aggregateOfficeList.Count; i++) {
+//					
+//					if (currentOffice.GetComponent<Office>().aggregateOfficeList[i].gameObject == officeToConnect){
+//						cycle = true;
+//						Debug.Log ("Cycle is true");
+//					}
+//				}
+
+				foreach (Office previousOffice in currentOffice.GetComponent<Office>().aggregateOfficeList) {
+					if (previousOffice == officeToConnect.GetComponent<Office> ()) {
+						cycle = true;
+						Debug.Log ("Cycle is true");
+
+						if (cycle) {
+							currentOfficeSelected = false;
+							currentOffice.GetComponent<MeshRenderer>().material.color = connectionColor;
+						}
+					}
+				}
+
+				if (officeToConnect.GetComponent<Office>().officeMembers.Any() && cycle == false){
 
 					officeToConnect.GetComponent<MeshRenderer>().material.color = connectionColor;
 					currentOffice.GetComponent<MeshRenderer>().material.color = connectionColor;
@@ -217,6 +241,11 @@ public class PlayerController : MonoBehaviour {
 
 					//creating connecting offices list
 					officeToConnect.GetComponent<Office>().connectingOffices.Add(currentOffice.GetComponent<Office>());
+
+					//add previous offices to list of aggregate offices in chain
+					officeToConnect.GetComponent<Office> ().aggregateOfficeList.Add (currentOffice.GetComponent<Office>());
+					officeToConnect.GetComponent<Office> ().aggregateOfficeList.AddRange(currentOffice.GetComponent<Office>().aggregateOfficeList);
+
 
 					currentFunds -= networkCost;
 
