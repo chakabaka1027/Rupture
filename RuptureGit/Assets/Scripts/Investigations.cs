@@ -77,9 +77,10 @@ public class Investigations : MonoBehaviour {
 					player.currentFunds += Accomplice (selectedNode).GetComponent<Node> ().illicitFunds;
 
 					RemoveNodeFromLists (selectedNode);
+					RemoveNodeFromLists (Accomplice(selectedNode));
+
 					GameObject.Destroy (Accomplice (selectedNode));
 					GameObject.Destroy (selectedNode);
-					RemoveNodeFromLists (Accomplice(selectedNode));
 				}
 			}
 		}
@@ -94,7 +95,10 @@ public class Investigations : MonoBehaviour {
 		player.allNodes.Remove (node);
 
 		foreach (Node observableNode in node.GetComponent<Node> ().observableNodes) {
-			observableNode.observableNodes.Remove (node.GetComponent<Node> ());
+			if (node != null) {
+				
+				observableNode.observableNodes.Remove (node.GetComponent<Node> ());
+			}
 		}
 
 		parentOffice.officeMembers.Remove (node.GetComponent<Node> ());
@@ -114,9 +118,9 @@ public class Investigations : MonoBehaviour {
 		}
 
 
-		foreach (Node officemember in parentOffice.officeMembers) {
-			officemember.selfIndex --;
-		}
+//		foreach (Node officemember in parentOffice.officeMembers) {
+//			officemember.selfIndex --;
+//		}
 
 	}
 

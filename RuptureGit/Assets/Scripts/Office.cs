@@ -19,6 +19,9 @@ public class Office : MonoBehaviour {
 
 	public int GetOfficeProduction(){
 		foreach (Node bureaucrat in officeMembers){
+			if (bureaucrat.nodeState == Node.NodeState.Corrupt) {
+				bureaucrat.production -= bureaucrat.production / bureaucrat.corruptionQuotient;
+			}
 			officeProduction += bureaucrat.production;
 		}
 
@@ -45,20 +48,20 @@ public class Office : MonoBehaviour {
 
 		return projectedRevenue;
 	}
-//
-//	int ProjectedMin(int ProjectedOfficeRevenue()){
+
+//	public int ProjectedMin(int ProjectedOfficeRevenue()){
 //		int projectedMin = 0;
 //
-//		projectedMin = (projectedRevenue - ProjectedOfficeRevenue() / 20);
+//		projectedMin = (ProjectedOfficeRevenue() - ProjectedOfficeRevenue() / 10);
 //
 //		return projectedMin;
 //		
 //	}
-//
-//	int ProjectedMax(int projectedRevenue){
+////
+//	public int ProjectedMax(int ProjectedOfficeRevenue()){
 //		int projectedMax = 0;
 //
-//		projectedMax = (projectedRevenue + ProjectedOfficeRevenue() / 50); 
+//		projectedMax = (ProjectedOfficeRevenue() + ProjectedOfficeRevenue() / 50); 
 //
 //		return projectedMax;
 //	}
