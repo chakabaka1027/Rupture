@@ -143,6 +143,7 @@ public class PlayerController : MonoBehaviour {
 
 
 				if (hitColliders1.Length == 0) {
+					office.officeMembers.Insert(0, currentBureaucrat.GetComponent<Node>());
 					currentBureaucrat.transform.position = office.transform.position + Vector3.forward * 1 + Vector3.up * 0.125f;
 					currentBureaucrat.GetComponent<Node>().selfIndex = 0;
 
@@ -237,7 +238,6 @@ public class PlayerController : MonoBehaviour {
 
 					//add to list of connected offices for payment checks
 					currentOffice.GetComponent<Office>().connectedOffices.Add(officeToConnect.GetComponent<Office>());
-					officeToConnect.GetComponent<Office>().connectedOffices.Add(currentOffice.GetComponent<Office>());
 
 					//creating connecting offices list
 					officeToConnect.GetComponent<Office>().connectingOffices.Add(currentOffice.GetComponent<Office>());

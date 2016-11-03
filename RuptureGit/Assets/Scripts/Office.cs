@@ -17,6 +17,9 @@ public class Office : MonoBehaviour {
 	public int projectedRevenue;
 	public bool hasAddedMembers = false;
 
+	public List<GameObject> outgoingNetworkLines;
+	public List<GameObject> outgoingNetworkFlows;
+
 
 	public int GetOfficeProduction(){
 		foreach (Node bureaucrat in officeMembers){

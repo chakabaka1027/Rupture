@@ -89,34 +89,52 @@ public class Investigations : MonoBehaviour {
 
 	void RemoveNodeFromLists(GameObject node){
 
-		List <Office> supervisorOfficeList = new List<Office>();
+//		List <Office> supervisorOfficeList = new List<Office>();
 		parentOffice = node.GetComponentInParent<Office> ();
 
-		player.allNodes.Remove (node);
 
-		foreach (Node observableNode in node.GetComponent<Node> ().observableNodes) {
-			if (node != null) {
-				
-				observableNode.observableNodes.Remove (node.GetComponent<Node> ());
+		foreach (GameObject observableNode in player.allNodes) {
+			observableNode.GetComponent<Node> ().observableNodes.Remove (node.GetComponent<Node>());
+		}
+
+
+//		foreach (Node observableNode in node.GetComponent<Node> ().observableNodes) {
+//			if (node != null) {
+//				
+//				observableNode.observableNodes.Remove (node.GetComponent<Node> ());
+//			}
+//		}
+
+		if (node.GetComponent<Node> ().isSupervisor) {
+			//copies the supervisor's list of observable offices to be transferred to the new supervisor
+//			supervisorOfficeList = node.GetComponent<Node> ().observableOffices;
+
+
+			foreach (Office connectedOffice in parentOffice.connectedOffices) {
+				connectedOffice.connectingOffices.Remove (parentOffice);
 			}
+
+			parentOffice.connectedOffices.Clear();
+
+			//destroys the network ties/flow emerging from each office
+			foreach (GameObject outgoingFlow in parentOffice.outgoingNetworkFlows) {
+				Destroy (outgoingFlow);
+			}
+
+			foreach (GameObject outgoingLine in parentOffice.outgoingNetworkLines) {
+				Destroy (outgoingLine);
+			}
+
+			parentOffice.outgoingNetworkFlows.Clear ();
+			parentOffice.outgoingNetworkLines.Clear ();
+
 		}
 
 		parentOffice.officeMembers.Remove (node.GetComponent<Node> ());
 		parentOffice.officeCount --;
 
-		if (node.GetComponent<Node> ().isSupervisor) {
-			//copies the supervisor's list of observable offices to be transferred to the new supervisor
-			supervisorOfficeList = node.GetComponent<Node> ().observableOffices;
 
-			foreach (Office observableOffice in node.GetComponent<Node> ().observableOffices) {
-				observableOffice.officeMembers.Remove (node.GetComponent<Node> ());
-			}
-
-			//makes the next node down in the list, which has been shifted to the zeroeth position, the new supervisor
-			parentOffice.MakeSupervisor ();
-			parentOffice.supervisor.observableOffices = supervisorOfficeList;
-		}
-
+		player.allNodes.Remove (node);
 
 //		foreach (Node officemember in parentOffice.officeMembers) {
 //			officemember.selfIndex --;
