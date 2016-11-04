@@ -32,6 +32,10 @@ public class UIManager : MonoBehaviour {
 
 	PlayerController player;
 
+	//written by Austin, 3 November, to add functionality to help destroy network lines
+	public LayerMask officeLayer;
+	public Office parentOffice;
+
 	void Start(){
 		player = FindObjectOfType<PlayerController>(); 
 	}
@@ -64,6 +68,16 @@ public class UIManager : MonoBehaviour {
 		flowAnimation.transform.LookAt(end + Vector3.down * 0.2f);
 		float distance = GetDistance(start, end);
 		flowAnimation.GetComponent<ParticleSystem>().startLifetime = distance/4.5f;
+
+		//added by Austin
+
+		Collider[] hitCollider = Physics.OverlapSphere (start, 0.01f, officeLayer);
+		parentOffice = hitCollider [0].gameObject.GetComponent<Office> ();
+		myLine.transform.parent = parentOffice.gameObject.transform;
+
+		parentOffice.outgoingNetworkLines.Add (myLine);
+		parentOffice.outgoingNetworkFlows.Add (flowAnimation);
+
 	}
 
 	float GetDistance (Vector3 start, Vector3 end){

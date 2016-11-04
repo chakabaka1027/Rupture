@@ -2565,6 +2565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectingOffices: []
   connectedOffices: []
+  aggregateOfficeList: []
   officeMembers: []
   supervisor: {fileID: 0}
   officeCount: 0
@@ -2572,6 +2573,8 @@ MonoBehaviour:
   officeProduction: 0
   projectedRevenue: 0
   hasAddedMembers: 0
+  outgoingNetworkLines: []
+  outgoingNetworkFlows: []
 --- !u!1 &1585944747
 GameObject:
   m_ObjectHideFlags: 0
@@ -2863,6 +2866,10 @@ MonoBehaviour:
   gameModeObject: {fileID: 1500833951}
   gameModeText: {fileID: 1074754660}
   payTimeText: {fileID: 0}
+  officeLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  parentOffice: {fileID: 0}
 --- !u!114 &1686774414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2981,6 +2988,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectingOffices: []
   connectedOffices: []
+  aggregateOfficeList: []
   officeMembers: []
   supervisor: {fileID: 0}
   officeCount: 0
@@ -2988,6 +2996,8 @@ MonoBehaviour:
   officeProduction: 0
   projectedRevenue: 0
   hasAddedMembers: 0
+  outgoingNetworkLines: []
+  outgoingNetworkFlows: []
 --- !u!1 &1787239050
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,9 +5,6 @@ using System.Linq;
 
 public class Investigations : MonoBehaviour {
 
-	//must write code in the UIManager script to change the PlayerState to Cursory or Thorough
-
-
 	PlayerController player;
 	Office parentOffice;
 	GameObject selectedNode;
@@ -19,8 +16,8 @@ public class Investigations : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		player = FindObjectOfType<PlayerController> ();
-	
+		player = FindObjectOfType<PlayerController> ();	
+		Debug.Log ("bada bing");
 	}
 	
 	// Update is called once per frame
@@ -53,6 +50,17 @@ public class Investigations : MonoBehaviour {
 				if (selectedNode.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
 					RemoveNodeFromLists (selectedNode);
 					Destroy (selectedNode);
+
+					for (int i = 0; i < player.allNodes.Count; i++) {
+						if (player.allNodes [i] == null) {
+							Destroy(player.allNodes[i]);
+						}
+					}
+
+					foreach (GameObject node in player.allNodes) {
+						node.GetComponent<Node>().UpdateWitnessableNodes ();
+					}
+						
 				}
 			}
 		}
@@ -81,6 +89,18 @@ public class Investigations : MonoBehaviour {
 
 					GameObject.Destroy (Accomplice (selectedNode));
 					GameObject.Destroy (selectedNode);
+
+					for (int i = 0; i < player.allNodes.Count; i++) {
+						if (player.allNodes [i] == null) {
+							Destroy(player.allNodes[i]);
+						}
+					}
+
+					foreach (GameObject node in player.allNodes) {
+						node.GetComponent<Node>().UpdateWitnessableNodes ();
+					}
+						
+
 				}
 			}
 		}
@@ -89,44 +109,49 @@ public class Investigations : MonoBehaviour {
 
 	void RemoveNodeFromLists(GameObject node){
 
-		List <Office> supervisorOfficeList = new List<Office>();
 		parentOffice = node.GetComponentInParent<Office> ();
 
-		player.allNodes.Remove (node);
-
-		foreach (Node observableNode in node.GetComponent<Node> ().observableNodes) {
-			if (node != null) {
-				
-				observableNode.observableNodes.Remove (node.GetComponent<Node> ());
-			}
+//		//Alex's suggested way of serving the same purpose intended to be carreied out by the foreach loop below
+		foreach (GameObject observableNode in player.allNodes) {
+			observableNode.GetComponent<Node> ().observableNodes.Remove (node.GetComponent<Node>());
 		}
-
 		parentOffice.officeMembers.Remove (node.GetComponent<Node> ());
 		parentOffice.officeCount --;
 
-		if (node.GetComponent<Node> ().isSupervisor) {
-			//copies the supervisor's list of observable offices to be transferred to the new supervisor
-			supervisorOfficeList = node.GetComponent<Node> ().observableOffices;
+//		foreach (Node observableNode in node.GetComponent<Node> ().observableNodes) {
+//			if (node != null) {
+//				
+//				observableNode.observableNodes.Remove (node.GetComponent<Node> ());
+//			}
+//		}
 
-			foreach (Office observableOffice in node.GetComponent<Node> ().observableOffices) {
-				observableOffice.officeMembers.Remove (node.GetComponent<Node> ());
+		if (node.GetComponent<Node> ().isSupervisor) {
+
+			foreach (Office connectedOffice in parentOffice.connectedOffices) {
+				connectedOffice.connectingOffices.Remove (parentOffice);
 			}
 
-			//makes the next node down in the list, which has been shifted to the zeroeth position, the new supervisor
-			parentOffice.MakeSupervisor ();
-			parentOffice.supervisor.observableOffices = supervisorOfficeList;
+			parentOffice.connectedOffices.Clear();
+
+			//destroys the network ties/flow emerging from each office
+			foreach (GameObject outgoingFlow in parentOffice.outgoingNetworkFlows) {
+				Destroy (outgoingFlow);
+			}
+
+			foreach (GameObject outgoingLine in parentOffice.outgoingNetworkLines) {
+				Destroy (outgoingLine);
+			}
+
+			parentOffice.outgoingNetworkFlows.Clear ();
+			parentOffice.outgoingNetworkLines.Clear ();
+
 		}
-
-
-//		foreach (Node officemember in parentOffice.officeMembers) {
-//			officemember.selfIndex --;
-//		}
+			
+		player.allNodes.Remove (node);
 
 	}
 
 	GameObject Accomplice(GameObject node){
-
-		Debug.Log ("I'm running");
 
 		List <Node> accomplices = new List<Node>();
 
@@ -136,10 +161,13 @@ public class Investigations : MonoBehaviour {
 			}			
 		}
 
+		print ("Accomplice count is " + accomplices.Count);
+
+
 		int randomAccomplice = Random.Range (0, accomplices.Count);
 		GameObject outedNode = accomplices [randomAccomplice].gameObject;
+		print("Outed node should be " + outedNode.name);
 
 		return outedNode;
 	}
-
 }

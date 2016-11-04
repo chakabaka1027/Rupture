@@ -144,26 +144,26 @@ public class PlayerController : MonoBehaviour {
 
 				if (hitColliders1.Length == 0) {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.forward * 1 + Vector3.up * 0.125f;
-					currentBureaucrat.GetComponent<Node>().selfIndex = 0;
+//					currentBureaucrat.GetComponent<Node>().selfIndex = 0;
 
 				} else if (hitColliders2.Length == 0) {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.left * 1 + Vector3.up * 0.125f;
-					currentBureaucrat.GetComponent<Node>().selfIndex = 1;
+//					currentBureaucrat.GetComponent<Node>().selfIndex = 1;
 
 				} else if (hitColliders3.Length == 0) {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.right * 1 + Vector3.up * 0.125f;
-					currentBureaucrat.GetComponent<Node>().selfIndex = 2;
+//					currentBureaucrat.GetComponent<Node>().selfIndex = 2;
 
 				} else if (hitColliders4.Length == 0) {
 					currentBureaucrat.transform.position = office.transform.position + Vector3.back * 1 + Vector3.up * 0.125f;
-					currentBureaucrat.GetComponent<Node>().selfIndex = 3;
+//					currentBureaucrat.GetComponent<Node>().selfIndex = 3;
 
 				} 
 
 				//generate list of all bureaucrats in office
 				office.officeMembers.Add(currentBureaucrat.GetComponent<Node>());
 
-//				currentBureaucrat.GetComponent<Node>().selfIndex = office.officeMembers.Count - 1;
+				currentBureaucrat.GetComponent<Node>().selfIndex = office.officeMembers.Count - 1;
 
 				office.officeCount ++;
 				bureaucratsRemaining --;
@@ -237,7 +237,6 @@ public class PlayerController : MonoBehaviour {
 
 					//add to list of connected offices for payment checks
 					currentOffice.GetComponent<Office>().connectedOffices.Add(officeToConnect.GetComponent<Office>());
-					officeToConnect.GetComponent<Office>().connectedOffices.Add(currentOffice.GetComponent<Office>());
 
 					//creating connecting offices list
 					officeToConnect.GetComponent<Office>().connectingOffices.Add(currentOffice.GetComponent<Office>());

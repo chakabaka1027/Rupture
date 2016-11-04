@@ -81,8 +81,8 @@ public class Node : MonoBehaviour{
 		if(!isSupervisor){
 			List<Node> withDupes = gameObject.GetComponentInParent<Office>().officeMembers;
 			List<Node> noDupes = withDupes.Distinct().ToList();
-			noDupes.Remove(noDupes[selfIndex]);
-
+//			noDupes.Remove(noDupes[selfIndex]);
+			noDupes.Remove(this);
 
 			//pseudocode: if there is an office connected to you, grab the supervisor from that office
 			if (gameObject.GetComponentInParent<Office>().connectingOffices != null){
@@ -99,7 +99,8 @@ public class Node : MonoBehaviour{
 			List<Node> withDupes = gameObject.GetComponentInParent<Office>().officeMembers;
 
 			List<Node> noDupes = withDupes.Distinct().ToList();
-			noDupes.Remove(noDupes[selfIndex]);
+//			noDupes.Remove(noDupes[selfIndex]);
+			noDupes.Remove(this);
 
 			foreach(Office office in observableOffices){
 				noDupes.AddRange(office.officeMembers);
