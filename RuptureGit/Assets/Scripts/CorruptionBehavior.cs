@@ -21,9 +21,9 @@ public class CorruptionBehavior : MonoBehaviour {
 				initialCorruptSeedNode = player.allNodes[randomIndex];
 				initialCorruptSeedNode.GetComponent<MeshRenderer>().material.color = Color.red;
 				initialCorruptSeedNode.GetComponent<Node>().nodeState = Node.NodeState.Corrupt;
-				player.currentFunds -= 400;
-				initialCorruptSeedNode.GetComponent<Node> ().illicitFunds = 400;
-				corruptionStarted = true;
+				player.currentFunds -= 500;
+				initialCorruptSeedNode.GetComponent<Node> ().illicitFunds = 500;
+//				corruptionStarted = true;
 			}
 		}
 	}
