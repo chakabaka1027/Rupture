@@ -44,8 +44,21 @@ public class DisplayOfficeRevenue : MonoBehaviour {
 			target = hit.collider.gameObject.transform;
 			Vector3 screenPos = Camera.main.WorldToScreenPoint (target.position);
 
-			//not sure if line below will work?
-//			Vector2 viewportPoint = Camera.main.WorldToViewportPoint(target.position);
+			Vector3 temp = screenPos;
+
+			if (screenPos.x < 800) {
+				temp.x += 150f;
+			} else if (screenPos.x > 800) {
+				temp.x -= 150;
+			}
+
+			if (screenPos.y < 120) {
+				temp.y += 120f;
+			} else if (screenPos.y > 300) {
+				temp.y -= 120f;
+			}
+
+			productionDisplay.transform.position = temp;
 
 			productionDisplay.SetActive (true);
 

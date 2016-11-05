@@ -125,14 +125,21 @@ public class Investigations : MonoBehaviour {
 //			}
 //		}
 
-		if (node.GetComponent<Node> ().isSupervisor) {
+		if (node.GetComponent<Node> ().isSupervisor || parentOffice.officeCount == 0) {
+			//connected offices are offices you see into
+			//connecting offices are ones that you are seen by
 
 			foreach (Office connectedOffice in parentOffice.connectedOffices) {
 				connectedOffice.connectingOffices.Remove (parentOffice);
+				connectedOffice.aggregateOfficeList.Remove (parentOffice);
 			}
 
-			parentOffice.connectedOffices.Clear();
-
+			//pay attention to this loop, it may not be right
+			foreach (Office connectingOffice in parentOffice.connectingOffices) {
+				connectingOffice.connectedOffices.Remove (parentOffice);
+//				connectingOffice.aggregateOfficeList.Remove (parentOffice);
+			}
+				
 			//destroys the network ties/flow emerging from each office
 			foreach (GameObject outgoingFlow in parentOffice.outgoingNetworkFlows) {
 				Destroy (outgoingFlow);
@@ -142,8 +149,14 @@ public class Investigations : MonoBehaviour {
 				Destroy (outgoingLine);
 			}
 
+			foreach(GameObject office in player.allOffices){
+				office.GetComponent<Office> ().aggregateOfficeList.Remove (parentOffice);
+			}
+
 			parentOffice.outgoingNetworkFlows.Clear ();
 			parentOffice.outgoingNetworkLines.Clear ();
+			parentOffice.connectedOffices.Clear();
+			parentOffice.aggregateOfficeList.Clear ();
 
 		}
 			

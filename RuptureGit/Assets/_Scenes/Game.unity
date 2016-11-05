@@ -279,6 +279,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2396510, guid: 7ca7e49bf72b8439b8cb3f9cd70f9d5a, type: 2}
+      propertyPath: m_MotionVectors
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7ca7e49bf72b8439b8cb3f9cd70f9d5a, type: 2}
   m_IsPrefabParent: 0
@@ -2795,6 +2799,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allNodes: []
+  allOffices: []
   playerState: 0
   clickable:
     serializedVersion: 2

@@ -9,6 +9,7 @@ using System.Linq;
 public class PlayerController : MonoBehaviour {
 
 	public List<GameObject> allNodes;
+	public List<GameObject> allOffices;
 	public enum State{Start, Hiring, Network, Office, Cursory, Thorough};
 	public State playerState;
 
