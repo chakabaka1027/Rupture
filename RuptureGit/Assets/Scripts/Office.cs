@@ -21,6 +21,12 @@ public class Office : MonoBehaviour {
 	public List<GameObject> outgoingNetworkFlows;
 
 
+	void Start(){
+		PlayerController player = FindObjectOfType<PlayerController>();
+		player.allOffices.Add (this.gameObject);
+		
+	}
+
 	public int GetOfficeProduction(){
 		foreach (Node bureaucrat in officeMembers){
 			if (bureaucrat.nodeState == Node.NodeState.Corrupt) {
