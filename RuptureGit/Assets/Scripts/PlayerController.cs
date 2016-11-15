@@ -42,11 +42,13 @@ public class PlayerController : MonoBehaviour {
 
 	[Header("Money")]
 	public int hireCost = 100;
-	public int networkCost = 300;
-	public int officeCost = 1000;
+	public int networkCost = 1000;
+	public int officeCost = 7500;
+	public int rent = 2500;
 
-	public int minutesUntilPay = 3;
-	public int startingFunds = 5000;
+//	public int minutesUntilPay = 3;
+	public float rentTimer;
+	public int startingFunds = 100000;
 	[HideInInspector]
 	public int currentFunds;
 	UIManager uiManager;
@@ -56,10 +58,16 @@ public class PlayerController : MonoBehaviour {
 		rb = GetComponent<Rigidbody>();
 		uiManager = GetComponent<UIManager>();
 		currentFunds = startingFunds;
-		InvokeRepeating("PayTheBill", 60 * minutesUntilPay, 60 * minutesUntilPay);
+		rentTimer = 90;
+//		InvokeRepeating("PayTheRent", 90, 90);
 	}
 	
 	void Update () {
+
+		if (Time.time > rentTimer) {
+			PayTheRent ();
+			rentTimer = Time.time + 90f;
+		}
 
 		//Create Office
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -202,8 +210,7 @@ public class PlayerController : MonoBehaviour {
 				officeToConnect = hit.collider.gameObject;
 
 
-				//this for loop doesn't work even though it seems the same as the foreach beneath it. I wonder why
-//				for (int i = 0; i > officeToConnect.GetComponent<Office>().aggregateOfficeList.Count; i++) {
+//				for (int i = 0; i < officeToConnect.GetComponent<Office>().aggregateOfficeList.Count; i++) {
 //					
 //					if (currentOffice.GetComponent<Office>().aggregateOfficeList[i].gameObject == officeToConnect){
 //						cycle = true;
@@ -258,10 +265,17 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void PayTheBill(){
-		if (currentFunds >= 5000){
-			currentFunds -= 5000;
+	void PayTheRent(){
+		
+		rent = 1000;
+		rent *= allOffices.Count;
+
+		if (currentFunds >= 1000){
+			currentFunds -= (rent);
+			Debug.Log ("Rent paid = " + rent);
 		} 
+
+		rent = 0;
 	}
 
 }

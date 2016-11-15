@@ -82,5 +82,5 @@ public class Office : MonoBehaviour {
 		supervisor.isSupervisor = true;
 		supervisor.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
 	}
-		
+
 }

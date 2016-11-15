@@ -2780,6 +2780,7 @@ GameObject:
   - 114: {fileID: 1686774413}
   - 114: {fileID: 1686774414}
   - 114: {fileID: 1686774415}
+  - 114: {fileID: 1686774416}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -2811,11 +2812,12 @@ MonoBehaviour:
   office: {fileID: 184346, guid: 7ca7e49bf72b8439b8cb3f9cd70f9d5a, type: 2}
   officeContainer: {fileID: 717573327}
   moveSpeed: 7
-  hireCost: 250
-  networkCost: 400
-  officeCost: 2500
+  hireCost: 100
+  networkCost: 1000
+  officeCost: 5000
+  rent: 1000
   minutesUntilPay: 3
-  startingFunds: 50000
+  startingFunds: 100000
   currentFunds: 0
 --- !u!54 &1686774411
 Rigidbody:
@@ -2886,6 +2888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3dcf19e3121e4a01a35768222fa0b84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  corruptNodes: []
 --- !u!114 &1686774415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2900,6 +2903,18 @@ MonoBehaviour:
   bureacratLayer:
     serializedVersion: 2
     m_Bits: 512
+--- !u!114 &1686774416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1686774409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27c07333f59704e11a7479aed4f058db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  payTimer: 45
 --- !u!1 &1721393615
 GameObject:
   m_ObjectHideFlags: 0

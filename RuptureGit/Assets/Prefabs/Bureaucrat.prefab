@@ -96,7 +96,7 @@ MonoBehaviour:
   payEffect: {fileID: 143360, guid: 70404889316b7400dae9de3b107d6a6c, type: 2}
   production: 0
   illicitFunds: 0
-  minimumThreshold: 150
+  minimumThreshold: 200
   corruptionQuotient: 10
   nodeState: 0
   observableNodes: []
