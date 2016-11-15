@@ -62,10 +62,7 @@ public class DisplayOfficeRevenue : MonoBehaviour {
 
 			productionDisplay.SetActive (true);
 
-//			productionDisplay.transform.position.x = screenPos.x;
-//			productionDisplay.transform.position.y = screenPos.y - 75f;
 			if (Time.time > projectionTimer) {
-				Debug.Log ("Office is located " + screenPos.x + " pixels from the left and " + screenPos.y + " from the bottom");
 				projectedRevText.text = "Projected Revenue: " + office.ProjectedOfficeRevenue ();
 				actualRevText.text = "Actual Revenue: " + office.GetOfficeProduction ();
 				projectionTimer += 5;

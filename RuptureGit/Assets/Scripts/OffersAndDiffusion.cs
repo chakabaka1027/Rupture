@@ -25,8 +25,8 @@ public class OffersAndDiffusion : MonoBehaviour {
 
 			for (int i = 0; i < witnesses.Count; i++){
 
-				//will give a 50% chance that the node will resist a bribe
-				int bribeChance = Random.Range (witnesses [i].minimumThreshold, witnesses [i].minimumThreshold + 1);
+				//the chance that a node will accept a bribe is inversely proportional to its number of potential witnesses
+				int bribeChance = Random.Range (witnesses [i].minimumThreshold, witnesses [i].minimumThreshold + 1 + witnesses[i].observableNodes.Count);
 
 				if ((thisNode.illicitFunds / 2) > witnesses [i].minimumThreshold && witnesses[i].minimumThreshold == bribeChance) {
 					//pay off witness

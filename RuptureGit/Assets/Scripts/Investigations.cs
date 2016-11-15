@@ -10,8 +10,8 @@ public class Investigations : MonoBehaviour {
 	GameObject selectedNode;
 
 	public LayerMask bureacratLayer;
-	int cursoryCost = 200;
-	int thoroughCost = 350;
+	int cursoryCost = 1500;
+	int thoroughCost = 2500;
 
 
 	// Use this for initialization
@@ -99,7 +99,6 @@ public class Investigations : MonoBehaviour {
 					foreach (GameObject node in player.allNodes) {
 						node.GetComponent<Node>().UpdateWitnessableNodes ();
 					}
-						
 
 				}
 			}
@@ -115,6 +114,9 @@ public class Investigations : MonoBehaviour {
 		foreach (GameObject observableNode in player.allNodes) {
 			observableNode.GetComponent<Node> ().observableNodes.Remove (node.GetComponent<Node>());
 		}
+
+		player.GetComponent<CorruptionBehavior> ().corruptNodes.Remove (node);
+
 		parentOffice.officeMembers.Remove (node.GetComponent<Node> ());
 		parentOffice.officeCount --;
 
