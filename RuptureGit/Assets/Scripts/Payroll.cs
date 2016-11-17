@@ -23,13 +23,24 @@ public class Payroll : MonoBehaviour {
 			payroll = 0;
 
 			foreach (GameObject node in player.allNodes) {
-				payroll += node.GetComponent<Node> ().salary;
+				if (node != null) {
+					payroll += node.GetComponent<Node> ().salary;
+				}
 			}
 
 			player.currentFunds -= payroll;
-			Debug.Log ("You paid " + payroll + "in payroll");
+			Debug.Log ("Payroll cost = " + payroll);
 			payTimer = Time.time + 45f;
 		}
-	
+	}
+
+	int PayrollDue(){
+		payroll = 0;
+		foreach (GameObject node in player.allNodes) {
+			if (node != null) {
+				payroll += node.GetComponent<Node> ().salary;
+			}
+		}
+		return payroll;
 	}
 }

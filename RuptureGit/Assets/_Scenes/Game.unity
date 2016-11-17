@@ -2781,6 +2781,7 @@ GameObject:
   - 114: {fileID: 1686774414}
   - 114: {fileID: 1686774415}
   - 114: {fileID: 1686774416}
+  - 114: {fileID: 1686774417}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -2812,11 +2813,11 @@ MonoBehaviour:
   office: {fileID: 184346, guid: 7ca7e49bf72b8439b8cb3f9cd70f9d5a, type: 2}
   officeContainer: {fileID: 717573327}
   moveSpeed: 7
-  hireCost: 100
+  hireCost: 500
   networkCost: 1000
   officeCost: 5000
-  rent: 1000
-  minutesUntilPay: 3
+  rent: 2500
+  rentTimer: 0
   startingFunds: 100000
   currentFunds: 0
 --- !u!54 &1686774411
@@ -2889,6 +2890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   corruptNodes: []
+  nonCorruptNodes: []
 --- !u!114 &1686774415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2915,6 +2917,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   payTimer: 45
+  payroll: 0
+--- !u!114 &1686774417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1686774409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04272b14e7a414b6bbbab35f27528380, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  devModeActivated: 0
+  defaultColor: {r: 0.75, g: 0.431, b: 0.22610293, a: 0}
 --- !u!1 &1721393615
 GameObject:
   m_ObjectHideFlags: 0
@@ -3655,7 +3671,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2038132809
 RectTransform:
   m_ObjectHideFlags: 0

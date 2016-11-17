@@ -41,14 +41,15 @@ public class PlayerController : MonoBehaviour {
 	Rigidbody rb;
 
 	[Header("Money")]
-	public int hireCost = 100;
-	public int networkCost = 1000;
-	public int officeCost = 7500;
-	public int rent = 2500;
+	public int hireCost = 500;
+	public int networkCost = 5000;
+	public int officeCost = 10000;
+	public int rent;
 
 //	public int minutesUntilPay = 3;
 	public float rentTimer;
 	public int startingFunds = 100000;
+
 	[HideInInspector]
 	public int currentFunds;
 	UIManager uiManager;
@@ -267,15 +268,18 @@ public class PlayerController : MonoBehaviour {
 
 	void PayTheRent(){
 		
-		rent = 1000;
+		rent = 2500;
 		rent *= allOffices.Count;
+			
+		currentFunds -= (rent);
+		Debug.Log ("Rent cost = " + rent);
 
-		if (currentFunds >= 1000){
-			currentFunds -= (rent);
-			Debug.Log ("Rent paid = " + rent);
-		} 
+	}
 
-		rent = 0;
+	int RentDue(){
+		rent = 2500;
+		rent += allOffices.Count;
+		return rent;
 	}
 
 }
