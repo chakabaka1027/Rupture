@@ -10,8 +10,8 @@ public class Investigations : MonoBehaviour {
 	GameObject selectedNode;
 
 	public LayerMask bureacratLayer;
-	int cursoryCost = 1500;
-	int thoroughCost = 2500;
+	int cursoryCost = 2500;
+	int thoroughCost = 8000;
 
 
 	// Use this for initialization
@@ -84,10 +84,15 @@ public class Investigations : MonoBehaviour {
 					player.currentFunds += selectedNode.GetComponent<Node> ().illicitFunds;
 					player.currentFunds += Accomplice (selectedNode).GetComponent<Node> ().illicitFunds;
 
-					RemoveNodeFromLists (selectedNode);
-					RemoveNodeFromLists (Accomplice(selectedNode));
+					GameObject accompliceCheck = (Accomplice (selectedNode));
 
-					GameObject.Destroy (Accomplice (selectedNode));
+					RemoveNodeFromLists (selectedNode);
+
+					if (accompliceCheck != null) {
+						RemoveNodeFromLists (Accomplice (selectedNode));
+						GameObject.Destroy (Accomplice (selectedNode));
+					}
+	
 					GameObject.Destroy (selectedNode);
 
 					for (int i = 0; i < player.allNodes.Count; i++) {
@@ -110,15 +115,11 @@ public class Investigations : MonoBehaviour {
 
 		parentOffice = node.GetComponentInParent<Office> ();
 
-//		//Alex's suggested way of serving the same purpose intended to be carreied out by the foreach loop below
+//		//Alex's suggested way of serving the same purpose intended to be carried out by the foreach loop below
 		foreach (GameObject observableNode in player.allNodes) {
 			observableNode.GetComponent<Node> ().observableNodes.Remove (node.GetComponent<Node>());
 		}
 
-		player.GetComponent<CorruptionBehavior> ().corruptNodes.Remove (node);
-
-		parentOffice.officeMembers.Remove (node.GetComponent<Node> ());
-		parentOffice.officeCount --;
 
 //		foreach (Node observableNode in node.GetComponent<Node> ().observableNodes) {
 //			if (node != null) {
@@ -159,16 +160,21 @@ public class Investigations : MonoBehaviour {
 			parentOffice.outgoingNetworkLines.Clear ();
 			parentOffice.connectedOffices.Clear();
 			parentOffice.aggregateOfficeList.Clear ();
-
 		}
-			
+
+		player.gameObject.GetComponent<CorruptionBehavior> ().corruptNodes.Remove (node);
 		player.allNodes.Remove (node);
+
+		parentOffice.officeMembers.Remove (node.GetComponent<Node> ());
+		parentOffice.officeCount --;
+
 
 	}
 
 	GameObject Accomplice(GameObject node){
 
 		List <Node> accomplices = new List<Node>();
+		GameObject outedNode = null;
 
 		foreach (Node witness in node.GetComponent<Node> ().observableNodes) {
 			if (witness.nodeState == Node.NodeState.Corrupt) {
@@ -178,10 +184,11 @@ public class Investigations : MonoBehaviour {
 
 		print ("Accomplice count is " + accomplices.Count);
 
-
-		int randomAccomplice = Random.Range (0, accomplices.Count);
-		GameObject outedNode = accomplices [randomAccomplice].gameObject;
-		print("Outed node should be " + outedNode.name);
+		if (accomplices.Count > 0) {
+			int randomAccomplice = Random.Range (0, accomplices.Count);
+			outedNode = accomplices [randomAccomplice].gameObject;
+			print ("Outed node should be " + outedNode.name);
+		}
 
 		return outedNode;
 	}

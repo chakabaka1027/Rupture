@@ -20,8 +20,8 @@ public class Node : MonoBehaviour{
 	public int production;
 	public int salary;
 	public int illicitFunds;
-	public int minimumThreshold = 500;
-	public int corruptionQuotient = 10;
+	public int minimumThreshold;
+	public int corruptionQuotient;
 	public enum NodeState{Neutral, Informant, Corrupt, Witness, Whistleblower};
 	public NodeState nodeState;
 
@@ -46,42 +46,43 @@ public class Node : MonoBehaviour{
 
 		//leveling system
 		experience = Time.time - t;
-		if (experience > 60){
+
+		if (experience > 60 + 70 + 80 + 90 + 100) {
+			level = 6;
+		} else if (experience >  60 + 70 + 80 + 90){
+			level = 5;
+		} else if (experience > 60 + 70 + 80){
+			level = 4;
+		} else if (experience > 60 + 70){
+			level = 3;
+		} else if (experience > 60){
 			level = 2;
 		}
-		if (experience > 60 + 70){
-			level = 3;
-		}
-		if (experience > 60 + 70 + 80){
-			level = 4;
-		}
-		if (experience >  60 + 70 + 80 + 90){
-			level = 5;
-		}
+
 
 		//money earning
 		if (level == 1){
 			production = 1000;
 			corruptionQuotient = 10;
-		}
-		if (level == 2){
+		} else if (level == 2){
 			production = 1500;
 			corruptionQuotient = 8;
-		}
-		if (level == 3){
+		} else if (level == 3){
 			production = 2250;
 			corruptionQuotient = 6;
-		}
-		if (level == 4){
+		} else if (level == 4){
 			production = 3250;
-			corruptionQuotient = 5;
-		}
-		if (level == 5){
-			production = 4500;
 			corruptionQuotient = 4;
+		} else if (level == 5){
+			production = 4500;
+			corruptionQuotient = 2;
+		} else if (level == 6) {
+			production = 6000;
+			corruptionQuotient = 1;
 		}
-
+			
 		salary = production;
+		minimumThreshold = salary;
 	}
 
 	public void UpdateWitnessableNodes(){
@@ -119,7 +120,7 @@ public class Node : MonoBehaviour{
 	}
 
 	public void Pay(){
-		if (Time.time > timeSincePay && gameObject.GetComponentInParent<Office>().connectedOffices.Any()){
+		if (Time.time > timeSincePay && (gameObject.GetComponentInParent<Office>().connectedOffices.Count > 0 || gameObject.GetComponentInParent<Office>().connectingOffices.Count > 0)){
 			if (nodeState == NodeState.Corrupt) {
 				//corrupt nodes take a cut of their production before paying the player
 				production = production - (production / corruptionQuotient);

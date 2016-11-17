@@ -34,16 +34,16 @@ public class OffersAndDiffusion : MonoBehaviour {
 						thisNode.illicitFunds -= witnesses [i].minimumThreshold;
 						witnesses [i].illicitFunds += witnesses [i].minimumThreshold;
 						witnesses [i].nodeState = Node.NodeState.Corrupt;	
-						witnesses [i].gameObject.GetComponent<MeshRenderer> ().material.color = Color.red;
+//						witnesses [i].gameObject.GetComponent<MeshRenderer> ().material.color = Color.red;
 					}
 				} else if (witnesses[i].nodeState != Node.NodeState.Corrupt){
 					witnesses[i].nodeState = Node.NodeState.Witness;
-					witnesses[i].gameObject.GetComponent<MeshRenderer> ().material.color = Color.green;
+//					witnesses[i].gameObject.GetComponent<MeshRenderer> ().material.color = Color.green;
 
 					int chance = Random.Range(1, 2000);
 					if (chance < whistleblowerPercentChance){
 						witnesses[i].nodeState = Node.NodeState.Whistleblower;
-						witnesses[i].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
+//						witnesses[i].gameObject.GetComponent<MeshRenderer>().material.color = Color.yellow;
 						Debug.Log (thisNode.name + "Is corrupt!");
 					}
 				}
