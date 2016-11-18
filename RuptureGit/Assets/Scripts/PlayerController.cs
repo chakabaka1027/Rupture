@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour {
 	Rigidbody rb;
 
 	[Header("Money")]
-	public int hireCost = 500;
+	public int hireCost = 750;
 	public int networkCost = 5000;
 	public int officeCost = 10000;
 	public int rent;
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour {
 		rb = GetComponent<Rigidbody>();
 		uiManager = GetComponent<UIManager>();
 		currentFunds = startingFunds;
-		rentTimer = 90;
+		rentTimer = 60;
 //		InvokeRepeating("PayTheRent", 90, 90);
 	}
 	
@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour {
 
 		if (Time.time > rentTimer) {
 			PayTheRent ();
-			rentTimer = Time.time + 90f;
+			rentTimer = Time.time + 60;
 		}
 
 		//Create Office
@@ -254,7 +254,6 @@ public class PlayerController : MonoBehaviour {
 					officeToConnect.GetComponent<Office> ().aggregateOfficeList.Add (currentOffice.GetComponent<Office>());
 					officeToConnect.GetComponent<Office> ().aggregateOfficeList.AddRange(currentOffice.GetComponent<Office>().aggregateOfficeList);
 
-
 					currentFunds -= networkCost;
 
 					foreach(GameObject node in allNodes){
@@ -267,19 +266,19 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void PayTheRent(){
-		
 		rent = 2500;
 		rent *= allOffices.Count;
 			
 		currentFunds -= (rent);
 		Debug.Log ("Rent cost = " + rent);
-
 	}
 
-	int RentDue(){
-		rent = 2500;
-		rent += allOffices.Count;
+	public int RentDue(){
+		
+		if (Time.time < rentTimer) {
+			rent = 2500;
+			rent *= allOffices.Count;
+		}
 		return rent;
 	}
-
 }
