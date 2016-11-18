@@ -20,67 +20,78 @@ public class Office : MonoBehaviour {
 	public List<GameObject> outgoingNetworkLines;
 	public List<GameObject> outgoingNetworkFlows;
 
+	PlayerController player;
+
 
 	void Start(){
-		PlayerController player = FindObjectOfType<PlayerController>();
-		player.allOffices.Add (this.gameObject);
 		
+		player = FindObjectOfType<PlayerController>();
+		player.allOffices.Add (this.gameObject);
 	}
 
-	public int GetOfficeProduction(){
-		foreach (Node bureaucrat in officeMembers){
-			if (bureaucrat.nodeState == Node.NodeState.Corrupt) {
-				bureaucrat.production -= bureaucrat.production / bureaucrat.corruptionQuotient;
+
+	void Update(){
+// use update function to keep track of empty offices so that their connecting lines can be destroyed?
+
+//		if (officeMembers.Count == 0 && connectingOffices.Count > 0) {
+//			foreach (Office connectingOffice in connectedOffices) {
+//			}
+//		}
+
+	}
+
+	public int ActualOfficeRevenue(){
+		int production = 0;
+		officeProduction = 0;
+
+		if (Time.time < player.rentTimer) {
+			Debug.Log ("GetOfficeProduction timer is running");
+
+			foreach (Node bureaucrat in officeMembers) {
+				if (bureaucrat.nodeState == Node.NodeState.Corrupt) {
+					production -= bureaucrat.production / bureaucrat.corruptionQuotient;
+				}
+				production += bureaucrat.production;
 			}
-			officeProduction += bureaucrat.production;
 		}
+
+		//90 is the length in seconds of the month cycle; 10 is the frequency in seconds of when nodes give revenue to player funds
+		production = (60 / 10) * production;
+		officeProduction += production;
 
 		return officeProduction;
 	}	
 
 	public int ProjectedOfficeRevenue(){
-		int nodeProjectedRevenue = 0;
-		foreach (Node bureaucrat in officeMembers) {
-			if (bureaucrat.level == 1) {
-				nodeProjectedRevenue = 150;
-			} else if (bureaucrat.level == 2) {
-				nodeProjectedRevenue = 175;
-			} else if (bureaucrat.level == 3) {
-				nodeProjectedRevenue = 200;
-			} else if (bureaucrat.level == 4) {
-				nodeProjectedRevenue = 225;
-			} else if (bureaucrat.level == 5) {
-				nodeProjectedRevenue = 250;
-			}
+		int production = 0;
+		officeProduction = 0;
 
-			projectedRevenue += nodeProjectedRevenue;
+		if (Time.time < player.rentTimer) {
+
+			foreach (Node bureaucrat in officeMembers) {
+				production += bureaucrat.production;
+			}
 		}
 
-		return projectedRevenue;
+		production = (60 / 10) * production;
+		officeProduction += production;
+
+		return officeProduction;
+	}	
+
+	public int minRange(){
+		int min = ProjectedOfficeRevenue() - (ProjectedOfficeRevenue() / 12);
+		return min;
 	}
 
-//	public int ProjectedMin(int ProjectedOfficeRevenue()){
-//		int projectedMin = 0;
-//
-//		projectedMin = (ProjectedOfficeRevenue() - ProjectedOfficeRevenue() / 10);
-//
-//		return projectedMin;
-//		
-//	}
-////
-//	public int ProjectedMax(int ProjectedOfficeRevenue()){
-//		int projectedMax = 0;
-//
-//		projectedMax = (ProjectedOfficeRevenue() + ProjectedOfficeRevenue() / 50); 
-//
-//		return projectedMax;
-//	}
-//
+	public int maxRange(){
+		int max = ProjectedOfficeRevenue () + (ProjectedOfficeRevenue () / 20);
+		return max;
+	}
 
 	public void MakeSupervisor(){
 		supervisor = officeMembers[0];
 		supervisor.isSupervisor = true;
 		supervisor.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
 	}
-
 }

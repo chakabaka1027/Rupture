@@ -7,7 +7,7 @@ using System.Linq;
 public class Payroll : MonoBehaviour {
 
 	PlayerController player;
-	public float payTimer = 45f;
+	public float payTimer = 60f;
 	public int payroll;
 
 
@@ -30,17 +30,20 @@ public class Payroll : MonoBehaviour {
 
 			player.currentFunds -= payroll;
 			Debug.Log ("Payroll cost = " + payroll);
-			payTimer = Time.time + 45f;
+			payTimer = Time.time + 60f;
 		}
 	}
 
-	int PayrollDue(){
+	public int PayrollDue(){
 		payroll = 0;
-		foreach (GameObject node in player.allNodes) {
-			if (node != null) {
-				payroll += node.GetComponent<Node> ().salary;
+//		if (Time.time < payTimer) {
+			foreach (GameObject node in player.allNodes) {
+				if (node != null) {
+					payroll += node.GetComponent<Node> ().salary;
+				}
 			}
-		}
+//		}
+
 		return payroll;
 	}
 }

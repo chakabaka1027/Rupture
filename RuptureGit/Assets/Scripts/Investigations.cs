@@ -11,7 +11,7 @@ public class Investigations : MonoBehaviour {
 
 	public LayerMask bureacratLayer;
 	int cursoryCost = 2500;
-	int thoroughCost = 8000;
+	int thoroughCost = 10000;
 
 
 	// Use this for initialization

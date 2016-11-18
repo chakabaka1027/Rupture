@@ -47,7 +47,7 @@ public class DisplayOfficeRevenue : MonoBehaviour {
 			Vector3 temp = screenPos;
 
 			if (screenPos.x < 800) {
-				temp.x += 150f;
+				temp.x += 200f;
 			} else if (screenPos.x > 800) {
 				temp.x -= 150;
 			}
@@ -62,12 +62,12 @@ public class DisplayOfficeRevenue : MonoBehaviour {
 
 			productionDisplay.SetActive (true);
 
-			if (Time.time > projectionTimer) {
-				projectedRevText.text = "Projected Revenue: " + office.ProjectedOfficeRevenue ();
-				actualRevText.text = "Actual Revenue: " + office.GetOfficeProduction ();
-				projectionTimer += 5;
+			if (office.officeMembers.Count > 0) {
+				projectedRevText.text = ("Projected Monthly Revenue: " + office.minRange () + " - " + office.maxRange ());
 			}
+
+			actualRevText.text = ("Actual Monthly Revenue: " + office.ActualOfficeRevenue ());
+
 		}
-			
 	}
 }

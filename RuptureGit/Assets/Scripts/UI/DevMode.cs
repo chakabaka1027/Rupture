@@ -43,6 +43,9 @@ public class DevMode : MonoBehaviour {
 		} else {
 			foreach (GameObject bureaucrat in player.allNodes) {
 				bureaucrat.GetComponent<MeshRenderer> ().material.color = defaultColor;
+				if (bureaucrat.GetComponent<Node> ().isSupervisor) {
+					bureaucrat.GetComponent<MeshRenderer> ().material.color = Color.blue;
+				}
 			}
 		}
 	
