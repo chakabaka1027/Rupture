@@ -27,7 +27,6 @@ public class Node : MonoBehaviour{
 
 	public List<Node> observableNodes;
 	public List<Office> observableOffices;
-	public bool counted = false;
 	public bool isSupervisor;
 
 	public int selfIndex;
@@ -38,7 +37,7 @@ public class Node : MonoBehaviour{
 	void Start(){
 		t = Time.time;
 		player = FindObjectOfType<PlayerController>();
-		InvokeRepeating("Pay" , 10, 10);
+		InvokeRepeating("Pay" , 10, 15);
 
 	}
 
@@ -120,16 +119,26 @@ public class Node : MonoBehaviour{
 	}
 
 	public void Pay(){
-		if (Time.time > timeSincePay && (gameObject.GetComponentInParent<Office>().connectedOffices.Count > 0 || gameObject.GetComponentInParent<Office>().connectingOffices.Count > 0)){
-			if (nodeState == NodeState.Corrupt) {
-				//corrupt nodes take a cut of their production before paying the player
-				production = production - (production / corruptionQuotient);
-				illicitFunds += production / corruptionQuotient;
-			} 
 
-			player.currentFunds += production;
-			timeSincePay = Time.time + payInterval;
-			PayEffect ();
+		bool pathToOrigin = false;
+		if (Time.time > timeSincePay && (gameObject.GetComponentInParent<Office>().connectedOffices.Count > 0 || gameObject.GetComponentInParent<Office>().connectingOffices.Count > 0)){
+			foreach (Office office in gameObject.GetComponentInParent<Office>().aggregateOfficeList) {
+				if (office.gameObject == player.allOffices [0]) {
+					pathToOrigin = true;
+				}
+			}
+
+			if (pathToOrigin) {
+				if (nodeState == NodeState.Corrupt) {
+					//corrupt nodes take a cut of their production before paying the player
+					production = production - (production / corruptionQuotient);
+					illicitFunds += production / corruptionQuotient;
+				} 
+
+				player.currentFunds += production;
+				timeSincePay = Time.time + payInterval;
+				PayEffect ();
+			}
 		}
 	}
 

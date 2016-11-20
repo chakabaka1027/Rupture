@@ -10,7 +10,7 @@ public class Investigations : MonoBehaviour {
 	GameObject selectedNode;
 
 	public LayerMask bureacratLayer;
-	int cursoryCost = 2500;
+	int cursoryCost = 5000;
 	int thoroughCost = 10000;
 
 
@@ -44,8 +44,8 @@ public class Investigations : MonoBehaviour {
 
 			selectedNode = hit.collider.gameObject;
 
-			if (player.currentFunds >= cursoryCost){
-				player.currentFunds -= cursoryCost;
+			if (player.currentFunds >= thoroughCost){
+				player.currentFunds -= thoroughCost;
 
 				if (selectedNode.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
 					RemoveNodeFromLists (selectedNode);
@@ -76,24 +76,13 @@ public class Investigations : MonoBehaviour {
 
 			selectedNode = hit.collider.gameObject;
 
-			if (player.currentFunds >= thoroughCost){
-				player.currentFunds -= thoroughCost;
+			if (player.currentFunds >= cursoryCost){
+				player.currentFunds -= cursoryCost;
 
 				if (selectedNode.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
-					
 					player.currentFunds += selectedNode.GetComponent<Node> ().illicitFunds;
-					player.currentFunds += Accomplice (selectedNode).GetComponent<Node> ().illicitFunds;
-
-					GameObject accompliceCheck = (Accomplice (selectedNode));
-
 					RemoveNodeFromLists (selectedNode);
-
-					if (accompliceCheck != null) {
-						RemoveNodeFromLists (Accomplice (selectedNode));
-						GameObject.Destroy (Accomplice (selectedNode));
-					}
-	
-					GameObject.Destroy (selectedNode);
+					Destroy (selectedNode);
 
 					for (int i = 0; i < player.allNodes.Count; i++) {
 						if (player.allNodes [i] == null) {
@@ -104,7 +93,6 @@ public class Investigations : MonoBehaviour {
 					foreach (GameObject node in player.allNodes) {
 						node.GetComponent<Node>().UpdateWitnessableNodes ();
 					}
-
 				}
 			}
 		}
@@ -168,28 +156,5 @@ public class Investigations : MonoBehaviour {
 		parentOffice.officeMembers.Remove (node.GetComponent<Node> ());
 		parentOffice.officeCount --;
 
-
-	}
-
-	GameObject Accomplice(GameObject node){
-
-		List <Node> accomplices = new List<Node>();
-		GameObject outedNode = null;
-
-		foreach (Node witness in node.GetComponent<Node> ().observableNodes) {
-			if (witness.nodeState == Node.NodeState.Corrupt) {
-				accomplices.Add(witness);
-			}			
-		}
-
-		print ("Accomplice count is " + accomplices.Count);
-
-		if (accomplices.Count > 0) {
-			int randomAccomplice = Random.Range (0, accomplices.Count);
-			outedNode = accomplices [randomAccomplice].gameObject;
-			print ("Outed node should be " + outedNode.name);
-		}
-
-		return outedNode;
 	}
 }
