@@ -17,34 +17,29 @@ public class CorruptionBehavior : MonoBehaviour {
 
 	void Start(){
 		player = FindObjectOfType<PlayerController>();
-		smallCycle = 60;
-		bigCycle = 300;
+		smallCycle = 45;
+		bigCycle = 200;
 	}
 
 	void Update(){
 		
 
 		//MakeCorrupt
-		if ((Input.GetKeyDown (KeyCode.Space) || (player.allNodes.Count > 16 && Time.time > 90)) && corruptionStarted == false) {
-			if (player.allNodes != null) {
-				int randomIndex = Random.Range (0, player.allNodes.Count);
-				initialCorruptSeedNode = player.allNodes [randomIndex];
-//				initialCorruptSeedNode.GetComponent<MeshRenderer> ().material.color = Color.red;
-				initialCorruptSeedNode.GetComponent<Node> ().nodeState = Node.NodeState.Corrupt;
-				player.currentFunds -= (player.currentFunds/10);
-				initialCorruptSeedNode.GetComponent<Node> ().illicitFunds += (player.currentFunds/10);
-				corruptionStarted = true;
-
-			}
+		if ((Input.GetKeyDown (KeyCode.Space) || (player.allNodes.Count > 20 && Time.time > 90)) && corruptionStarted == false) {
+			int randomIndex = Random.Range (0, player.allNodes.Count);
+			initialCorruptSeedNode = player.allNodes [randomIndex];
+			initialCorruptSeedNode.GetComponent<Node> ().nodeState = Node.NodeState.Corrupt;
+			player.currentFunds -= (player.currentFunds/10);
+			initialCorruptSeedNode.GetComponent<Node> ().illicitFunds += (player.currentFunds/10);
+			corruptionStarted = true;
 		}
 
 		//make this probability of a new seed dependent on the corrupt node's number of witnesses
 		if (Time.time > smallCycle && corruptionStarted) {
 			if (player.allNodes != null) {
 				foreach (GameObject node in player.allNodes) {
-					if (node.GetComponent<Node> ().nodeState == Node.NodeState.Corrupt && node.GetComponent<Node>().counted == false) {
+					if (node.GetComponent<Node> ().nodeState == Node.NodeState.Corrupt) {
 						corruptNodes.Add (node);
-						node.GetComponent<Node> ().counted = true;
 					}
 				}
 
@@ -57,36 +52,37 @@ public class CorruptionBehavior : MonoBehaviour {
 				}
 			}
 
-			smallCycle = Time.time + 60f;
+			smallCycle = Time.time + 45f;
 		}
 
 		if (Time.time > bigCycle && corruptionStarted) {
+
+			Debug.Log ("searching for noncorrupt nodes");
+
+
 			foreach (GameObject node in player.allNodes) {
-				if ((node.GetComponent<Node> ().nodeState == Node.NodeState.Neutral 
-					|| node.GetComponent<Node> ().nodeState == Node.NodeState.Witness) 
-					&& node.GetComponent<Node> ().counted == false) {
+				if (node.GetComponent<Node> ().nodeState != Node.NodeState.Corrupt) {
 					nonCorruptNodes.Add (node);
-					node.GetComponent<Node> ().counted = true;
-
-					if (nonCorruptNodes.Count > 0) {
-						foreach (GameObject nonCorruptNode in nonCorruptNodes){
-							if (nonCorruptNode.GetComponent<Node>().observableNodes.Count < 5){
-								nonCorruptNode.GetComponent<Node> ().nodeState = Node.NodeState.Corrupt;
-								player.currentFunds -= (player.currentFunds / 20);
-								nonCorruptNode.GetComponent<Node> ().illicitFunds += (player.currentFunds / 20);
-							}
-						}
-
-//						int randomIndex = Random.Range (0, nonCorruptNodes.Count);
-//						GameObject newCorruptionSeed = nonCorruptNodes [randomIndex];
-//						player.currentFunds -= (player.currentFunds / 20);
-//						newCorruptionSeed.GetComponent<Node> ().illicitFunds += (player.currentFunds / 20);
-//						Debug.Log (newCorruptionSeed + " is a newly corrupted seed");
-					}
 				}
 			}
 
-			bigCycle = Time.time + 330;
+			Debug.Log ("there are " + nonCorruptNodes.Count + " noncorrupt nodes");
+
+			if (nonCorruptNodes.Count > 0) {
+				for (int i = 0; i <= 3; i++){
+					if (nonCorruptNodes[i] != null && nonCorruptNodes[i].GetComponent<Node>().observableNodes.Count <= 5){
+						nonCorruptNodes[i].GetComponent<Node> ().nodeState = Node.NodeState.Corrupt;
+						player.currentFunds -= (player.currentFunds / 30);
+						nonCorruptNodes[i].GetComponent<Node> ().illicitFunds += (player.currentFunds / 30);
+					}
+
+					Debug.Log("New nodes have been corrupted");
+				}
+			}
+
+			nonCorruptNodes.Clear();
+							
+			bigCycle = Time.time + 200;
 		}
 	}
 

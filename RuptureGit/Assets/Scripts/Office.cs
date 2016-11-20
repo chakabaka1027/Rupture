@@ -45,8 +45,6 @@ public class Office : MonoBehaviour {
 		officeProduction = 0;
 
 		if (Time.time < player.rentTimer) {
-			Debug.Log ("GetOfficeProduction timer is running");
-
 			foreach (Node bureaucrat in officeMembers) {
 				if (bureaucrat.nodeState == Node.NodeState.Corrupt) {
 					production -= bureaucrat.production / bureaucrat.corruptionQuotient;
@@ -55,8 +53,8 @@ public class Office : MonoBehaviour {
 			}
 		}
 
-		//90 is the length in seconds of the month cycle; 10 is the frequency in seconds of when nodes give revenue to player funds
-		production = (60 / 10) * production;
+		//60 is the length in seconds of the month cycle; 15 is the frequency in seconds of when nodes give revenue to player funds
+		production = (60 / 15) * production;
 		officeProduction += production;
 
 		return officeProduction;
@@ -73,7 +71,7 @@ public class Office : MonoBehaviour {
 			}
 		}
 
-		production = (60 / 10) * production;
+		production = (60 / 15) * production;
 		officeProduction += production;
 
 		return officeProduction;

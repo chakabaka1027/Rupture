@@ -41,9 +41,9 @@ public class PlayerController : MonoBehaviour {
 	Rigidbody rb;
 
 	[Header("Money")]
-	public int hireCost = 750;
+	public int hireCost = 1000;
 	public int networkCost = 5000;
-	public int officeCost = 10000;
+	public int officeCost = 15000;
 	public int rent;
 
 //	public int minutesUntilPay = 3;

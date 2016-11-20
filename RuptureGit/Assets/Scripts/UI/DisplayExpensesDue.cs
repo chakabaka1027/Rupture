@@ -34,6 +34,5 @@ public class DisplayExpensesDue : MonoBehaviour {
 		
 		rentText.text = "Rent Due: " + player.RentDue();
 
-	
 	}
 }
