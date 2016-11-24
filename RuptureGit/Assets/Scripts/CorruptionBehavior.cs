@@ -36,6 +36,9 @@ public class CorruptionBehavior : MonoBehaviour {
 
 		//make this probability of a new seed dependent on the corrupt node's number of witnesses
 		if (Time.time > smallCycle && corruptionStarted) {
+			
+			corruptNodes.Clear ();
+
 			if (player.allNodes != null) {
 				foreach (GameObject node in player.allNodes) {
 					if (node.GetComponent<Node> ().nodeState == Node.NodeState.Corrupt) {
@@ -49,6 +52,7 @@ public class CorruptionBehavior : MonoBehaviour {
 					player.currentFunds -= (player.currentFunds / 10);
 					newCorruptionSeed.GetComponent<Node> ().illicitFunds += (player.currentFunds / 10);
 					Debug.Log (newCorruptionSeed + " is a new seed");
+
 				}
 			}
 
@@ -56,6 +60,8 @@ public class CorruptionBehavior : MonoBehaviour {
 		}
 
 		if (Time.time > bigCycle && corruptionStarted) {
+
+			nonCorruptNodes.Clear();
 
 			Debug.Log ("searching for noncorrupt nodes");
 
@@ -72,17 +78,15 @@ public class CorruptionBehavior : MonoBehaviour {
 				for (int i = 0; i <= 3; i++){
 					if (nonCorruptNodes[i] != null && nonCorruptNodes[i].GetComponent<Node>().observableNodes.Count <= 5){
 						nonCorruptNodes[i].GetComponent<Node> ().nodeState = Node.NodeState.Corrupt;
-						player.currentFunds -= (player.currentFunds / 30);
-						nonCorruptNodes[i].GetComponent<Node> ().illicitFunds += (player.currentFunds / 30);
+						player.currentFunds -= (player.currentFunds / 20);
+						nonCorruptNodes[i].GetComponent<Node> ().illicitFunds += (player.currentFunds / 20);
 					}
 
-					Debug.Log("New nodes have been corrupted");
+					Debug.Log("New node corrupted");
 				}
 			}
-
-			nonCorruptNodes.Clear();
-							
-			bigCycle = Time.time + 200;
+											
+			bigCycle = Time.time + 150;
 		}
 	}
 
