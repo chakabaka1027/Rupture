@@ -235,6 +235,7 @@ public class PlayerController : MonoBehaviour {
 
 					officeToConnect.GetComponent<MeshRenderer>().material.color = connectionColor;
 					currentOffice.GetComponent<MeshRenderer>().material.color = connectionColor;
+					connectionColor = Color.white;
 
 					currentOfficeSelected = false;
 
