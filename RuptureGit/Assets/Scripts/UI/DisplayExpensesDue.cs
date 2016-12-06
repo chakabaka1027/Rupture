@@ -6,7 +6,6 @@ public class DisplayExpensesDue : MonoBehaviour {
 
 	public Text payrollText;
 	public Text rentText;
-	public Text totalText;
 	public Text expensesTimer;
 
 	PlayerController player;
@@ -31,11 +30,9 @@ public class DisplayExpensesDue : MonoBehaviour {
 
 		expensesTimer.text = secondsTimer;
 
-		payrollText.text = "Payroll: " + player.GetComponentInParent<Payroll> ().PayrollDue ();
+		payrollText.text = "Payroll Due: " + player.GetComponentInParent<Payroll> ().PayrollDue ();
 		
-		rentText.text = "Rent: " + player.RentDue();
-
-		totalText.text = "Total: " + (player.RentDue () + player.GetComponentInParent<Payroll> ().PayrollDue ());
+		rentText.text = "Rent Due: " + player.RentDue();
 
 	}
 }

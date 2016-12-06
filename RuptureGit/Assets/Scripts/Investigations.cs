@@ -10,7 +10,7 @@ public class Investigations : MonoBehaviour {
 	GameObject selectedNode;
 
 	public LayerMask bureacratLayer;
-	int cursoryCost = 3000;
+	int cursoryCost = 5000;
 	int thoroughCost = 10000;
 
 
@@ -44,8 +44,8 @@ public class Investigations : MonoBehaviour {
 
 			selectedNode = hit.collider.gameObject;
 
-			if (player.currentFunds >= cursoryCost){
-				player.currentFunds -= cursoryCost;
+			if (player.currentFunds >= thoroughCost){
+				player.currentFunds -= thoroughCost;
 
 				if (selectedNode.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
 					RemoveNodeFromLists (selectedNode);
@@ -76,8 +76,8 @@ public class Investigations : MonoBehaviour {
 
 			selectedNode = hit.collider.gameObject;
 
-			if (player.currentFunds >= thoroughCost){
-				player.currentFunds -= thoroughCost;
+			if (player.currentFunds >= cursoryCost){
+				player.currentFunds -= cursoryCost;
 
 				if (selectedNode.GetComponent<Node>().nodeState == Node.NodeState.Corrupt) {
 					player.currentFunds += selectedNode.GetComponent<Node> ().illicitFunds;
@@ -104,17 +104,17 @@ public class Investigations : MonoBehaviour {
 		parentOffice = node.GetComponentInParent<Office> ();
 
 //		//Alex's suggested way of serving the same purpose intended to be carried out by the foreach loop below
-//		foreach (GameObject observableNode in player.allNodes) {
-//			observableNode.GetComponent<Node> ().observableNodes.Remove (node.GetComponent<Node>());
-//		}
-
-
-		foreach (Node observableNode in node.GetComponent<Node> ().observableNodes) {
-			if (node != null) {
-				
-				observableNode.observableNodes.Remove (node.GetComponent<Node> ());
-			}
+		foreach (GameObject observableNode in player.allNodes) {
+			observableNode.GetComponent<Node> ().observableNodes.Remove (node.GetComponent<Node>());
 		}
+
+
+//		foreach (Node observableNode in node.GetComponent<Node> ().observableNodes) {
+//			if (node != null) {
+//				
+//				observableNode.observableNodes.Remove (node.GetComponent<Node> ());
+//			}
+//		}
 
 		if (node.GetComponent<Node> ().isSupervisor || parentOffice.officeCount == 0) {
 			//connected offices are offices you see into
@@ -150,6 +150,7 @@ public class Investigations : MonoBehaviour {
 			parentOffice.aggregateOfficeList.Clear ();
 		}
 
+		player.gameObject.GetComponent<CorruptionBehavior> ().corruptNodes.Remove (node);
 		player.allNodes.Remove (node);
 
 		parentOffice.officeMembers.Remove (node.GetComponent<Node> ());
