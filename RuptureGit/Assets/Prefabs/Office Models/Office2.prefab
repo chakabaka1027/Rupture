@@ -9,44 +9,44 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1000013484943158}
+  m_RootGameObject: {fileID: 1000014273344226}
   m_IsPrefabParent: 1
---- !u!1 &1000013484943158
+--- !u!1 &1000014273344226
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 4000013955977144}
-  - 33: {fileID: 33000010961273098}
-  - 23: {fileID: 23000010743583178}
+  - 4: {fileID: 4000011045662950}
+  - 33: {fileID: 33000013354400394}
+  - 23: {fileID: 23000013219821072}
   m_Layer: 0
-  m_Name: OFFICE2
+  m_Name: Office2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4000013955977144
+--- !u!4 &4000011045662950
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013484943158}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -141.13078, y: 75.90328, z: 43.61606}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_GameObject: {fileID: 1000014273344226}
+  m_LocalRotation: {x: -0.7071068, y: 3.4315516e-24, z: -1.5700931e-16, w: 0.7071067}
+  m_LocalPosition: {x: 13.355532, y: 1.2419615, z: -9.609408}
+  m_LocalScale: {x: 129.21503, y: 129.21503, z: 124.19615}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!23 &23000010743583178
+--- !u!23 &23000013219821072
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013484943158}
+  m_GameObject: {fileID: 1000014273344226}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -70,10 +70,10 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &33000010961273098
+--- !u!33 &33000013354400394
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013484943158}
-  m_Mesh: {fileID: 4300000, guid: aaaa2416c97ef4eaeb10b2db67a509e5, type: 3}
+  m_GameObject: {fileID: 1000014273344226}
+  m_Mesh: {fileID: 4300000, guid: e0b2b0d3a61ad44b4816131888ea5a5c, type: 3}
